@@ -1,177 +1,531 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devanshu Sharma - Aspiring 10x Developer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Devanshu Sharma - Systems Developer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --navy: #0F172A;
+            --cyan: #22D3EE;
+            --gray: #64748B;
+            --highlight: #00FFA3;
+            --purple: #A855F7;
+            --light-text: #E0E7EF;
+            --dark-bg: #0a0a0a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
         body {
             font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            background: var(--dark-bg);
+            color: var(--light-text);
+            overflow-x: hidden;
         }
-        .section-title {
-            border-bottom: 2px solid #38bdf8; /* light blue */
+
+        ::-webkit-scrollbar { width: 0; display: none; }
+
+        /* Animated Stars Background */
+        .stars { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; }
+        .star { position:absolute; width:2px; height:2px; border-radius:50%; animation: float 20s infinite ease-in-out; }
+        @keyframes float {
+            0%,100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+            50% { transform: translateY(-30px) translateX(15px); opacity: 1; }
+        }
+
+        /* Navbar */
+        .navbar { position: fixed; top:0; width:100%; padding:20px 50px; display:flex; justify-content:space-between; align-items:center; z-index:1000; transition: all .3s ease; }
+        .navbar.scrolled { background: rgba(15,23,42,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(34,211,238,0.2); }
+        .navbar .logo { font-size:24px; font-weight:800; color:var(--cyan); text-shadow: 0 0 20px rgba(34,211,238,0.5); }
+        .navbar nav a { margin-left:30px; color:var(--light-text); text-decoration:none; font-weight:500; transition: color .3s; font-size:14px; }
+        .navbar nav a:hover { color:var(--cyan); }
+
+        /* Hero */
+        .hero { position:relative; min-height:100vh; background:#000; display:flex; align-items:center; padding:0 100px; overflow:hidden; }
+        .hero-image {
+            position:absolute; left:80px; top:50%; transform: translateY(-50%); width:360px; height:360px; border-radius:50%;
+            background: linear-gradient(135deg,var(--cyan),var(--purple)); filter: drop-shadow(0 0 40px rgba(34,211,238,0.6));
+            z-index:2; display:flex; align-items:center; justify-content:center; font-size:110px; font-weight:800; color: rgba(255,255,255,0.9);
+        }
+        .hero-content { position:relative; margin-left:auto; max-width:640px; z-index:2; }
+        .hero-location { display:flex; align-items:center; gap:8px; color:var(--gray); font-size:14px; margin-bottom:15px; }
+        .hero-content h1 { font-size:56px; font-weight:800; background: linear-gradient(135deg,var(--cyan),var(--highlight)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px; line-height:1.05; }
+        .hero-content h2 { font-size:24px; font-weight:600; color:var(--purple); margin-bottom:18px; }
+        .hero-content p { font-size:16px; line-height:1.8; color:var(--light-text); margin-bottom:28px; }
+        .cta-button { display:inline-flex; align-items:center; gap:10px; padding:12px 28px; background:linear-gradient(135deg,var(--cyan),var(--purple)); color:white; text-decoration:none; border-radius:50px; font-weight:600; font-size:15px; box-shadow:0 10px 40px rgba(34,211,238,0.35); transition: all .25s; }
+        .cta-button:hover { transform:translateY(-3px); box-shadow:0 15px 50px rgba(34,211,238,0.6); }
+
+        /* Sections */
+        section { position:relative; padding:100px 100px; }
+        .about { background: linear-gradient(180deg,#16213E 0%, #0f3443 100%); }
+        .about-content { max-width:900px; margin:0 auto; opacity:0; transform: translateY(30px); transition: all .8s ease; }
+        .about-content.visible { opacity:1; transform: translateY(0); }
+        .about-content i { font-size:48px; color:var(--cyan); margin-bottom:20px; }
+        .about-content h2 { font-size:40px; margin-bottom:18px; color:var(--cyan); }
+        .about-content p { font-size:16px; line-height:1.7; color:var(--light-text); margin-bottom:12px; }
+        .about-goal { background: rgba(34,211,238,0.07); border-left:4px solid var(--cyan); padding:16px; border-radius:8px; margin-top:20px; }
+        .about-goal strong { color:var(--cyan); font-size:16px; }
+
+        .section-title { text-align:center; font-size:36px; margin-bottom:40px; color:var(--cyan); text-shadow: 0 0 20px rgba(34,211,238,0.25); }
+
+        /* Skills */
+        .skills-container { max-width:1400px; margin:0 auto; }
+        .skills-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:20px; }
+        .skill-item { background: rgba(34,211,238,0.04); backdrop-filter: blur(20px); border:1px solid rgba(34,211,238,0.12); border-radius:12px; padding:18px; transition: all .25s; }
+        .skill-item strong { color:var(--cyan); display:block; margin-bottom:8px; }
+        .skill-item span { color:var(--gray); font-size:14px; }
+
+        /* Projects */
+        .projects-grid { max-width:1400px; margin:0 auto; display:grid; gap:24px; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); }
+        .project-card { background: rgba(168,85,247,0.04); backdrop-filter: blur(20px); border:1px solid rgba(168,85,247,0.12); border-radius:16px; padding:28px; transition: all .3s; opacity:0; transform:translateY(20px); }
+        .project-card.visible { opacity:1; transform:translateY(0); }
+        .project-header { display:flex; gap:16px; align-items:flex-start; margin-bottom:12px; }
+        .project-icon { font-size:40px; color:var(--purple); }
+        .project-title h3 { font-size:22px; color:var(--purple); margin-bottom:6px; }
+        .project-status { display:inline-block; padding:6px 12px; background: rgba(168,85,247,0.12); border-radius:14px; font-size:12px; color:var(--purple); font-weight:600; }
+        .project-card p { font-size:15px; line-height:1.6; color:var(--light-text); margin-bottom:10px; }
+        .project-tech { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+        .tech-tag { padding:6px 12px; background: rgba(34,211,238,0.06); border:1px solid rgba(34,211,238,0.12); border-radius:16px; font-size:13px; color:var(--cyan); font-weight:500; }
+
+        /* Knowledge */
+        .knowledge-grid { max-width:1200px; margin:0 auto; display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:20px; }
+        .knowledge-item { background: rgba(0,255,163,0.04); border:1px solid rgba(0,255,163,0.08); border-radius:12px; padding:20px; }
+        .knowledge-item h4 { color:var(--highlight); margin-bottom:8px; }
+        .knowledge-item p { color:var(--light-text); font-size:14px; line-height:1.6; }
+
+        /* Education & Experience */
+        .education-card { max-width:900px; margin:0 auto; background: rgba(34,211,238,0.04); border-radius:12px; padding:30px; border:1px solid rgba(34,211,238,0.1); text-align:center; }
+
+        .experience-grid { max-width:1200px; margin:0 auto; display:grid; gap:16px; }
+        .experience-card { background: rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.03); padding:18px; border-radius:10px; }
+
+        /* Contact */
+        .contact { text-align:center; background: linear-gradient(180deg,#16213E 0%, #0f3443 100%); }
+        .social-links { display:flex; justify-content:center; gap:40px; flex-wrap:wrap; margin-top:18px; }
+        .social-link { display:flex; flex-direction:column; align-items:center; gap:10px; color:var(--light-text); text-decoration:none; }
+        .social-link i { font-size:44px; color:var(--cyan); transition: all .25s; }
+        .social-link span { font-size:14px; font-weight:600; color:var(--light-text); }
+
+        .footer { padding:28px; text-align:center; background:#000; color:var(--gray); font-size:13px; }
+
+        /* Responsive */
+        @media (max-width:1400px) { section { padding-left:50px; padding-right:50px; } .hero-image { left:40px; } }
+        @media (max-width:1024px) {
+            .hero { flex-direction:column; justify-content:center; text-align:center; padding:120px 50px; }
+            .hero-image { position:relative; left:0; transform:none; margin-bottom:30px; width:260px; height:260px; font-size:72px; }
+            .navbar nav { display:none; }
+        }
+        @media (max-width:768px) {
+            .hero-content h1 { font-size:34px; }
+            .section-title { font-size:28px; }
+            section { padding:60px 20px; }
+            .skills-grid, .projects-grid, .knowledge-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-200">
-    <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-4xl">
+<body>
+    <!-- Animated Stars -->
+    <div class="stars" id="stars"></div>
 
-        <header class="flex flex-col sm:flex-row items-center justify-between mb-8">
-            <div class="text-center sm:text-left mb-4 sm:mb-0">
-                <h1 class="text-4xl lg:text-5xl font-extrabold text-white">Devanshu Sharma</h1>
-                <h2 class="text-xl lg:text-2xl font-semibold text-sky-400 mt-1">10x Developer in the Making</h2>
-                <p class="text-gray-400 mt-2">Computer Science Student | Rust Specialist | Open-Source Champion</p>
-            </div>
-            <div class="flex flex-col items-center sm:items-end space-y-2">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://sharmadevanshu089.github.io/&bgcolor=111827&color=e5e7eb&qzone=1" alt="GitHub QR Code" class="w-24 h-24 rounded-lg border-2 border-gray-700 mb-2">
-                <div class="flex flex-col items-center sm:items-end space-y-2 text-sm">
-                    <a href="mailto:sharma.devanshu089@gmail.com" class="flex items-center space-x-2 text-gray-300 hover:text-sky-400 transition-colors">
-                        <i class="fas fa-envelope w-4 text-center"></i>
-                        <span>sharma.devanshu089@gmail.com</span>
-                    </a>
-                    <a href="tel:+919755467945" class="flex items-center space-x-2 text-gray-300 hover:text-sky-400 transition-colors">
-                        <i class="fas fa-phone w-4 text-center"></i>
-                        <span>+91 9755467945</span>
-                    </a>
-                    <a href="https://github.com/SharmaDevanshu089" target="_blank" class="flex items-center space-x-2 text-gray-300 hover:text-sky-400 transition-colors">
-                        <i class="fab fa-github w-4 text-center"></i>
-                        <span>SharmaDevanshu089</span>
-                    </a>
-                    <div class="flex items-center space-x-2 text-gray-300">
-                        <i class="fas fa-map-marker-alt w-4 text-center"></i>
-                        <span>Madhya Pradesh, India</span>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <section class="mb-10">
-            <p class="text-base text-gray-300 leading-relaxed">
-                Self-taught and relentlessly driven, I am a developer forged in the crucible of curiosity and practical application. My journey, which began during the 2020 lockdown, is defined by a commitment to building high-quality, efficient software that solves tangible, real-world problems. I don't just write code; I architect robust solutions, specializing in the performance and safety of <strong class="text-sky-400 font-bold">Rust</strong>. I thrive on complex challenges and am on an unwavering mission to achieve 10x developer proficiency through impactful, project-based learning and significant contributions to the open-source community.
-            </p>
-        </section>
-
-        <section class="mb-10">
-            <h3 class="text-2xl font-bold text-white pb-2 mb-6 section-title">Hackathons & Competitions</h3>
-            <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-sky-500 transition-all duration-300">
-                <h4 class="text-lg font-bold text-sky-400">📜 <a href="https://github.com/SharmaDevanshu089/Clause-AI" target="_blank" rel="noopener noreferrer" class="hover:underline">Clause AI (Google Gen AI Hackathon)</a></h4>
-                <p class="text-gray-400 mt-2 text-sm">An intelligent legal co-pilot engineered for the Google Gen AI Exchange Hackathon. Leverages a Rust backend (Actix-web) and the Google Gemini API to demystify complex legal documents, providing real-time, plain-language analysis.</p>
-                <div class="mt-3 text-xs font-medium">
-                    <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">Rust</span>
-                    <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">Actix-web</span>
-                    <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">Generative AI</span>
-                    <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">API Integration</span>
-                    <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">Hackathon</span>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-10">
-            <h3 class="text-2xl font-bold text-white pb-2 mb-6 section-title">Core Projects</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-sky-500 transition-all duration-300">
-                    <h4 class="text-lg font-bold text-sky-400">📁 <a href="https://github.com/SharmaDevanshu089/Fillie" target="_blank" rel="noopener noreferrer" class="hover:underline">Fillie</a></h4>
-                    <p class="text-gray-400 mt-2 text-sm">A cross-platform, secure file-sharing utility built entirely in Rust. Solves the problem of trustworthy file transfer with AES-256 encryption, SHA256 integrity checks, and a novel serverless distribution model powered by GitHub.</p>
-                    <div class="mt-3 text-xs font-medium">
-                        <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">Rust</span>
-                        <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">AES-256</span>
-                        <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">SHA256</span>
-                        <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">Cross-Platform</span>
-                    </div>
-                </div>
-
-                <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-sky-500 transition-all duration-300">
-                    <h4 class="text-lg font-bold text-sky-400">📦 <a href="https://github.com/SharmaDevanshu089/AutoCrate" target="_blank" rel="noopener noreferrer" class="hover:underline">AutoCrate & Installer</a></h4>
-                    <p class="text-gray-400 mt-2 text-sm">A developer productivity suite. The CLI tool automates the creation of sequential Rust projects to streamline workflow. The companion installer simplifies distribution by fetching binaries directly from GitHub Releases, supporting multiple platforms.</p>
-                     <div class="mt-3 text-xs font-medium">
-                        <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">Rust</span>
-                        <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">CLI</span>
-                        <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">Automation</span>
-                        <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">GitHub API</span>
-                    </div>
-                </div>
-                
-                <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-sky-500 transition-all duration-300">
-                    <h4 class="text-lg font-bold text-sky-400">🔒 <a href="#" target="_blank" rel="noopener noreferrer" class="hover:underline">lockr</a></h4>
-                    <p class="text-gray-400 mt-2 text-sm">A secure, cross-platform desktop application built with Tauri and Rust. Designed for local file and secret management with a focus on performance and a minimal footprint, utilizing the system's native webview for a lightweight GUI.</p>
-                     <div class="mt-3 text-xs font-medium">
-                        <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">Rust</span>
-                        <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">Tauri</span>
-                        <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">Desktop App</span>
-                        <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">Security</span>
-                    </div>
-                </div>
-
-                <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-sky-500 transition-all duration-300">
-                    <h4 class="text-lg font-bold text-sky-400">💬 <a href="https://github.com/SharmaDevanshu089/from-user" target="_blank" rel="noopener noreferrer" class="hover:underline">from-user (input)</a></h4>
-                    <p class="text-gray-400 mt-2 text-sm">A minimalist, highly-simplified Rust input helper library. Created to address the verbosity of standard input handling, making CLI applications cleaner and more intuitive to write. Published on crates.io and available for public use.</p>
-                     <div class="mt-3 text-xs font-medium">
-                        <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">Rust</span>
-                        <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">Library</span>
-                        <span class="inline-block bg-gray-700 text-sky-300 rounded-full px-3 py-1 mr-2 mb-2">Open Source</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-10">
-            <h3 class="text-2xl font-bold text-white pb-2 mb-6 section-title">My Skill Tree</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                <div>
-                    <h4 class="text-lg font-semibold text-sky-400 mb-3">Languages</h4>
-                    <ul class="space-y-2 text-gray-300">
-                        <li><strong class="font-bold text-white">Rust:</strong> Primary language for fast, safe, and concurrent software.</li>
-                        <li><strong>Python:</strong> Scripting, automation, and rapid prototyping.</li>
-                        <li><strong>JavaScript:</strong> Modern web development.</li>
-                        <li><strong>C#:</strong> Game development with Unity.</li>
-                        <li><strong>Bash:</strong> System administration and scripting (Arch user).</li>
-                        <li><strong>Java, PHP:</strong> Foundational languages from early learning.</li>
-                    </ul>
-                </div>
-                 <div>
-                    <h4 class="text-lg font-semibold text-sky-400 mb-3">Frameworks & Tools</h4>
-                    <ul class="space-y-2 text-gray-300">
-                        <li><strong>Tauri & React:</strong> Building performant, cross-platform desktop GUIs.</li>
-                        <li><strong>Actix-web:</strong> High-performance web servers in Rust.</li>
-                        <li><strong>Vite:</strong> High-speed frontend tooling.</li>
-                        <li><strong>Git & GitHub:</strong> Version control and collaborative development.</li>
-                        <li><strong>Unity Engine:</strong> 3D and 2D game creation.</li>
-                        <li><strong>NeoVim:</strong> Preferred code editor for maximum efficiency.</li>
-                         <li><strong>Bootstrap:</strong> Rapid UI development.</li>
-                    </ul>
-                </div>
-                 <div>
-                    <h4 class="text-lg font-semibold text-sky-400 mb-3">Platforms & Creative</h4>
-                    <ul class="space-y-2 text-gray-300">
-                        <li><strong>Linux:</strong> Main development environment for performance and control.</li>
-                        <li><strong>Generative AI:</strong> Prompt engineering and API integration (Gemini).</li>
-                        <li><strong>Blender:</strong> 3D modeling, animation, and procedural art.</li>
-                        <li><strong>Open Source:</strong> Firm believer and active contributor.</li>
-                         <li><strong>Game Development:</strong> Passionate about creating interactive experiences.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section>
-             <h3 class="text-2xl font-bold text-white pb-2 mb-6 section-title">Education</h3>
-             <div>
-                <h4 class="text-lg font-semibold text-white">Bachelor of Technology in Computer Science</h4>
-                <p class="text-gray-400">IET Udaipur, Madhya Pradesh, India (Expected Graduation: 2029)</p>
-             </div>
-        </section>
-
-        <footer class="text-center mt-12 pt-6 border-t border-gray-700">
-            <p class="text-gray-500 text-sm">Driven by a passion for building things that matter. Ready to take on the next challenge.</p>
-        </footer>
-
+    <!-- Navbar -->
+    <div class="navbar" id="navbar">
+        <div class="logo">DS</div>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#experience">Experience</a>
+            <a href="#contact">Contact</a>
+        </nav>
     </div>
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+        <div class="hero-image">DS</div>
+        <div class="hero-content">
+            <div class="hero-location">
+                <i class="fa fa-map-marker"></i>
+                <span>Biaora, Madhya Pradesh, India</span>
+            </div>
+            <h1>Devanshu Sharma</h1>
+            <h2>Systems Developer & Rust Enthusiast</h2>
+            <p>B.Tech CSE student building high-performance systems software with Rust. I focus on memory safety, low-level architecture, async runtimes, and shipping practical tools that devs actually use.</p>
+            <a href="#contact" class="cta-button"><i class="fa fa-paper-plane"></i> Let's Connect</a>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="about" id="about">
+        <div class="about-content">
+            <i class="fa fa-user"></i>
+            <h2>About Me</h2>
+            <p>I’m a first-year Computer Science student at the Institute of Engineering & Technology, Udaipur. I’ve been coding since 2020 and focus on systems design, Rust, and building cross-platform developer tools.</p>
+            <p>My approach is practical: I learn by shipping. I prefer small, high-impact projects — from desktop apps to command-line utilities and low-level libraries. I thrive in environments that value correctness, performance, and clean abstractions.</p>
+            <div class="about-goal">
+                <strong>Goal:</strong> Become a 10x developer — contribute to Rust ecosystem tooling, build reliable system software, and help teams ship safer, faster products.
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="skills-section" id="skills">
+        <h2 class="section-title">Technical Arsenal</h2>
+        <div class="skills-container">
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <strong>Rust</strong>
+                    <span>Primary language — ownership, lifetimes, async, traits, and systems design.</span>
+                </div>
+                <div class="skill-item">
+                    <strong>C / C++</strong>
+                    <span>Strong foundation in low-level programming, memory models, and performance reasoning.</span>
+                </div>
+                <div class="skill-item">
+                    <strong>Python</strong>
+                    <span>AI prototypes, scripting, data pipelines, and integration work (ClauseAI project).</span>
+                </div>
+                <div class="skill-item">
+                    <strong>JavaScript / TypeScript</strong>
+                    <span>Frontend integration (Svelte / React), API glue and UI for developer tools.</span>
+                </div>
+                <div class="skill-item">
+                    <strong>Tooling</strong>
+                    <span>Git, GitHub Actions, Cargo, Clippy, Rustfmt, CI/CD automation.</span>
+                </div>
+                <div class="skill-item">
+                    <strong>Cross-platform</strong>
+                    <span>Tauri, desktop app development (Windows/Linux), Android prototyping.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="projects-section" id="projects">
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-header">
+                    <i class="fa fa-desktop project-icon"></i>
+                    <div class="project-title">
+                        <h3>AutoCrate Installer GUI</h3>
+                        <span class="project-status">Production Ready</span>
+                    </div>
+                </div>
+                <p>Cross-platform installer built with <strong>Rust + Tauri + Svelte + DaisyUI</strong>. Reactive UI fetches GitHub release metadata, picks correct artifacts, and runs safe installations with robust error handling.</p>
+                <p><strong>Highlights:</strong> End-to-end ownership, fast backend, automated GitHub API integration, and modular architecture separating UI & logic.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Rust</span>
+                    <span class="tech-tag">Tauri</span>
+                    <span class="tech-tag">Svelte</span>
+                    <span class="tech-tag">GitHub API</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <i class="fa fa-database project-icon"></i>
+                    <div class="project-title">
+                        <h3>Redis-from-Scratch</h3>
+                        <span class="project-status">In Progress</span>
+                    </div>
+                </div>
+                <p>Implementing an in-memory key-value store in pure Rust to learn systems internals: networking, efficient serialization, command parsing, and concurrent data structures.</p>
+                <p><strong>Learning Focus:</strong> TCP sockets, protocol design, lock-free / lock-minimizing patterns, and production-grade benchmarks.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Rust</span>
+                    <span class="tech-tag">TCP Sockets</span>
+                    <span class="tech-tag">Concurrency</span>
+                    <span class="tech-tag">Benchmarks</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <i class="fa fa-terminal project-icon"></i>
+                    <div class="project-title">
+                        <h3>Linux CLI Utilities</h3>
+                        <span class="project-status">Ongoing</span>
+                    </div>
+                </div>
+                <p>Set of lightweight command-line tools for file parsing, system stats, and robust error handling — showcasing idiomatic error propagation and ergonomics with <code>Result</code> and the <code>? </code> operator.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Rust</span>
+                    <span class="tech-tag">CLI</span>
+                    <span class="tech-tag">UX</span>
+                    <span class="tech-tag">Systems</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <i class="fa fa-code project-icon"></i>
+                    <div class="project-title">
+                        <h3>Clause AI</h3>
+                        <span class="project-status">Prototype</span>
+                    </div>
+                </div>
+                <p>AI integration project built with Python — models and tooling for text processing and automation. Demonstrates ability to integrate ML components into production pipelines and expose them via APIs.</p>
+                <p><strong>Repo:</strong> <a href="https://github.com/sharmadevanshu089/ClauseAI" target="_blank" style="color:var(--cyan)">github.com/sharmadevanshu089/ClauseAI</a></p>
+                <div class="project-tech">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">ML</span>
+                    <span class="tech-tag">APIs</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <i class="fa fa-cube project-icon"></i>
+                    <div class="project-title">
+                        <h3>Blender 3D Models</h3>
+                        <span class="project-status">Completed</span>
+                    </div>
+                </div>
+                <p>Large-scale architectural models (e.g., detailed Burj Khalifa) for events — demonstrates spatial reasoning, attention to detail, and project delivery under constraints.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Blender</span>
+                    <span class="tech-tag">3D</span>
+                    <span class="tech-tag">Design</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience & Hackathons -->
+    <section id="experience">
+        <h2 class="section-title">Experience & Hackathons</h2>
+        <div class="experience-grid">
+            <div class="experience-card">
+                <h3 style="color:var(--cyan); margin-bottom:8px;">Hackathons & Competitions</h3>
+                <p style="color:var(--light-text); margin-bottom:8px;">
+                    Active participant in college and online hackathons — focused on rapid prototyping, integration of Rust backends with lightweight frontends, and deploying minimum viable features fast. I take ownership of backend, protocol, and integration layers during events.
+                </p>
+                <ul style="color:var(--gray); margin-left:18px;">
+                    <li>Multiple hackathons — shipped working prototypes within 24–48 hours (backend + UI).</li>
+                    <li>Experience presenting demos, writing concise technical docs, and responding to feedback under time pressure.</li>
+                </ul>
+            </div>
+
+            <div class="experience-card">
+                <h3 style="color:var(--cyan); margin-bottom:8px;">Internship / Project Readiness</h3>
+                <p style="color:var(--light-text); margin-bottom:8px;">
+                    I may be early in formal titles, but I have hands-on project delivery experience: shipping a desktop app in 3 weeks, building infrastructure tools, and integrating AI prototypes. Comfortable working with senior engineers, following code reviews, and iterating quickly.
+                </p>
+                <ul style="color:var(--gray); margin-left:18px;">
+                    <li>Quick ramp: learn an unfamiliar codebase and produce small, testable contributions.</li>
+                    <li>Production mindset: logging, CI, release automation, and monitoring considerations.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Knowledge -->
+    <section class="knowledge-section">
+        <h2 class="section-title">Deep Knowledge Areas</h2>
+        <div class="knowledge-grid">
+            <div class="knowledge-item">
+                <h4>Ownership & Borrowing</h4>
+                <p>Expert at designing safe, zero-cost abstractions using Rust's ownership model and lifetimes for correctness without sacrificing performance.</p>
+            </div>
+            <div class="knowledge-item">
+                <h4>Error Handling</h4>
+                <p>Practiced with Result, Option, custom error types, and graceful propagation. Build tools that fail loudly & clearly for fast debugging.</p>
+            </div>
+            <div class="knowledge-item">
+                <h4>Concurrency & Async</h4>
+                <p>Practical experience with async runtimes, threads, channels, and Arc/Mutex patterns — focus on predictable, maintainable concurrency.</p>
+            </div>
+            <div class="knowledge-item">
+                <h4>Cargo & Ecosystem</h4>
+                <p>Deep familiarity with workspaces, crate management, dependency hygiene, and release workflows in the Rust ecosystem.</p>
+            </div>
+            <div class="knowledge-item">
+                <h4>Cross-Language Interop</h4>
+                <p>Comfortable with FFI, C bindings, and integrating Rust modules into existing C/C++ codebases or exposing functionality to Python/JS.</p>
+            </div>
+            <div class="knowledge-item">
+                <h4>Codebase Analysis</h4>
+                <p>Ability to read, understand, and contribute to large codebases. I prioritize minimal, well-tested changes over risky large refactors.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education -->
+    <section class="education-section" id="education">
+        <h2 class="section-title">Education</h2>
+        <div class="education-card">
+            <i class="fa fa-graduation-cap" style="font-size:40px;color:var(--cyan); margin-bottom:10px;"></i>
+            <h3>B.Tech in Computer Science & Engineering</h3>
+            <h4>Institute of Engineering & Technology, Udaipur</h4>
+            <p style="color:var(--gray); margin-top:8px;">Class of 2028 • First Year Student</p>
+        </div>
+    </section>
+
+    <!-- Goals -->
+    <section class="goals-section">
+        <h2 class="section-title">Current Goals & Vision</h2>
+        <div class="projects-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px,1fr));">
+            <div class="project-card visible">
+                <h3 style="color:var(--purple); margin-bottom:8px;">Contribute to Rust</h3>
+                <p>Regularly contribute to tools & crates — target: make meaningful PRs to Rust ecosystem projects and Rust Foundation initiatives.</p>
+            </div>
+            <div class="project-card visible">
+                <h3 style="color:var(--purple); margin-bottom:8px;">Master Systems</h3>
+                <p>Deep-dive into async runtimes, build systems, and compiler internals to build robust developer tooling.</p>
+            </div>
+            <div class="project-card visible">
+                <h3 style="color:var(--purple); margin-bottom:8px;">Build Tools</h3>
+                <p>Create practical developer tools and integrations that improve developer velocity and reliability.</p>
+            </div>
+            <div class="project-card visible">
+                <h3 style="color:var(--purple); margin-bottom:8px;">Ship Consistently</h3>
+                <p>Keep momentum: small, well-tested releases that demonstrate ownership and production-readiness.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <h2>Let's Build Together</h2>
+        <p style="color:var(--gray); max-width:800px; margin:10px auto 18px;">
+            Open to project-based contributions, internships, remote collaborations, and mentorship. I move fast, learn fast, and prefer contributing practical code and tools.
+        </p>
+        <div class="social-links">
+            <a href="https://github.com/sharmadevanshu089" class="social-link" target="_blank">
+                <i class="fa fa-github"></i>
+                <span>GitHub</span>
+            </a>
+            <a href="mailto:sharma.devanshu089@gmail.com" class="social-link">
+                <i class="fa fa-envelope"></i>
+                <span>Email</span>
+            </a>
+            <a href="https://www.linkedin.com/in/sharmadevanshu089/" class="social-link" target="_blank">
+                <i class="fa fa-linkedin"></i>
+                <span>LinkedIn</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Devanshu Sharma • Built with passion for systems programming • Powered by Rust 🦀</p>
+    </footer>
+
+    <script>
+        // Generate animated stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const colors = ['#00ff99', '#00aaff', '#33ccff', '#a855f7', '#00ffa3', '#22D3EE'];
+            const starCount = 120;
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                star.style.animationDelay = Math.random() * 20 + 's';
+                star.style.animationDuration = (12 + Math.random() * 12) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) navbar.classList.add('scrolled');
+            else navbar.classList.remove('scrolled');
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -60px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.about-content, .project-card, .knowledge-item, .education-card, .experience-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - offset;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Parallax effect for hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero && scrolled < window.innerHeight) hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+        });
+
+        // Project card stagger
+        const projectCards = document.querySelectorAll('.project-card');
+        projectCards.forEach((card, index) => card.style.transitionDelay = `${index * 0.08}s`);
+
+        // Dynamic hero roles
+        const heroTitle = document.querySelector('.hero-content h2');
+        if (heroTitle) {
+            const roles = [
+                'Systems Developer & Rust Enthusiast',
+                'Open Source Contributor',
+                'Performance Optimization Geek',
+                'Memory Safety Advocate'
+            ];
+            let currentRole = 0;
+            setInterval(() => {
+                currentRole = (currentRole + 1) % roles.length;
+                heroTitle.style.opacity = '0';
+                setTimeout(() => {
+                    heroTitle.textContent = roles[currentRole];
+                    heroTitle.style.opacity = '1';
+                }, 250);
+            }, 4200);
+        }
+
+        // Loading fade
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => { document.body.style.transition = 'opacity .5s ease'; document.body.style.opacity = '1'; }, 80);
+        });
+
+        // Console message
+        console.log('%c🦀 Built with Rust in mind! 🦀', 'color: #00FFA3; font-size: 16px; font-weight: bold;');
+        console.log('%cGitHub: github.com/sharmadevanshu089', 'color:#22D3EE;');
+
+        // Custom cursor (subtle)
+        let cursor = document.createElement('div');
+        cursor.style.cssText = `
+            position: fixed; width: 18px; height: 18px; border: 2px solid rgba(34,211,238,0.5);
+            border-radius: 50%; pointer-events: none; z-index: 9999; transition: transform .18s ease; display:none;
+        `;
+        document.body.appendChild(cursor);
+        if (window.innerWidth > 768) {
+            cursor.style.display = 'block';
+            document.addEventListener('mousemove', (e) => { cursor.style.left = e.clientX - 9 + 'px'; cursor.style.top = e.clientY - 9 + 'px'; });
+            document.querySelectorAll('a, button, .skill-item, .project-card').forEach(el => {
+                el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(1.35)'; cursor.style.borderColor = 'rgba(0,255,163,0.9)'; });
+                el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; cursor.style.borderColor = 'rgba(34,211,238,0.5)'; });
+            });
+        }
+    </script>
 </body>
 </html>
