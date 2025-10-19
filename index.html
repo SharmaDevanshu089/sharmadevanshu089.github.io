@@ -46,11 +46,30 @@
         .site-header nav a:hover { color:var(--cyan); }
 
         .hero { position:relative; min-height:100vh; display:flex; align-items:center; padding:0 100px; overflow:hidden; }
+        
+        /* CHANGE: Updated hero-image CSS */
         .hero-image {
-            position:absolute; left:80px; top:50%; transform: translateY(-50%); width:360px; height:360px; border-radius:50%;
-            background: linear-gradient(135deg,var(--cyan),var(--purple)); filter: drop-shadow(0 0 50px rgba(34,211,238,0.5));
-            z-index:1; display:flex; align-items:center; justify-content:center; font-size:110px; font-weight:800; color: rgba(15, 23, 42, 0.8);
+            position:absolute;
+            left: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--cyan), var(--purple));
+            filter: drop-shadow(0 0 50px rgba(34, 211, 238, 0.5));
+            z-index: 1;
+            overflow: hidden; /* Ensures the image is clipped */
         }
+
+        /* CHANGE: Added this new rule for the image itself */
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Prevents stretching */
+            object-position: center; /* Centers the image */
+        }
+
         .hero-content { position:relative; margin-left:auto; max-width:640px; z-index:2; }
         .hero-location { display:flex; align-items:center; gap:8px; color:var(--gray); font-size:14px; margin-bottom:15px; }
         .hero-content h1 { font-size:56px; font-weight:800; background: linear-gradient(135deg,var(--cyan),var(--highlight)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px; line-height:1.05; }
@@ -86,7 +105,6 @@
         .project-icon { font-size:40px; color:var(--purple); }
         .project-title h3 { font-size:22px; color:var(--purple); margin-bottom:6px; }
         .project-status { display:inline-block; padding:6px 12px; background: rgba(168,85,247,0.12); border-radius:14px; font-size:12px; color:var(--purple); font-weight:600; }
-        /* CHANGE: Styling for the dynamic version badge */
         .version-badge { color: var(--highlight); font-weight: 700; margin-left: 4px; }
         .project-card p { font-size:15px; line-height:1.6; color:var(--light-text); margin-bottom:10px; flex-grow: 1; }
         .project-tech { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
@@ -99,12 +117,10 @@
         }
         .project-button.github { background: var(--purple); }
         .project-button.github:hover { background: var(--cyan); box-shadow: 0 5px 15px rgba(34,211,238,0.4); transform: translateY(-2px); }
-        /* CHANGE: Styling for new download button */
         .project-button.download { background: var(--highlight); color: var(--dark-bg); }
         .project-button.download:hover { background: white; box-shadow: 0 5px 15px rgba(255,255,255,0.2); transform: translateY(-2px); }
 
         .education-experience-grid { max-width:1200px; margin:0 auto; display:grid; gap:24px; grid-template-columns: 1fr; }
-        /* CHANGE: Added a grid for the hackathon cards */
         .hackathon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; width: 100%;}
         .education-card, .experience-card {
             background: rgba(34,211,238,0.04); border-radius:12px; padding:30px;
@@ -134,7 +150,7 @@
         @media (max-width:1400px) { section { padding-left:50px; padding-right:50px; } .hero-image { left:40px; } }
         @media (max-width:1024px) {
             .hero { flex-direction:column; justify-content:center; text-align:center; padding:120px 50px; }
-            .hero-image { position:relative; left:0; transform:none; margin-bottom:30px; width:260px; height:260px; font-size:72px; }
+            .hero-image { position:relative; left:0; transform:none; margin-bottom:30px; width:260px; height:260px; }
             .site-header nav { display:none; }
         }
         @media (max-width:768px) {
@@ -163,7 +179,9 @@
 
     <main>
         <section class="hero" id="home">
-            <div class="hero-image">DS</div>
+            <div class="hero-image">
+                <img src="head.png" alt="A headshot of Devanshu Sharma">
+            </div>
             <div class="hero-content">
                 <div class="hero-location">
                     <i class="fa fa-map-marker"></i>
@@ -208,7 +226,6 @@
         <section class="projects-section" id="projects">
             <h2 class="section-title">Featured Projects</h2>
             <div class="projects-grid">
-                <!-- CHANGE: Added data-repo for API fetching and download button -->
                 <article class="project-card" data-repo="Installer">
                     <div class="project-header">
                         <i class="fa fa-desktop project-icon"></i>
@@ -295,7 +312,6 @@
             </div>
         </section>
 
-        <!-- CHANGE: This entire section has been rewritten -->
         <section id="education-experience">
             <h2 class="section-title">Education & Hackathon Experience</h2>
             <div class="education-experience-grid">
@@ -444,7 +460,6 @@
                 document.querySelectorAll('.project-card').forEach((card, index) => card.style.transitionDelay = `${index * 0.08}s`);
             }
             
-            // CHANGE: New function to fetch latest versions from GitHub API
             async function fetchProjectVersions() {
                 const projectsToFetch = document.querySelectorAll('.project-card[data-repo]');
                 
@@ -466,7 +481,6 @@
                         }
                     } catch (error) {
                         console.error(`Could not fetch version for ${repo}:`, error);
-                        // If fetching fails, the default status text remains
                     }
                 }
             }
@@ -479,7 +493,7 @@
             initCustomCursor();
             initSmoothScrolling();
             initProjectCardStagger();
-            fetchProjectVersions(); // Fetch dynamic versions
+            fetchProjectVersions();
 
             setTimeout(() => { document.body.style.opacity = '1'; }, 100); 
 
