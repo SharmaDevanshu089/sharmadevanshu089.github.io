@@ -7,15 +7,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --navy: #0F172A;
             --cyan: #22D3EE;
-            --gray: #64748B;
+            --gray: #94A3B8; /* Lighter gray for better contrast */
             --highlight: #00FFA3;
             --purple: #A855F7;
-            --light-text: #E0E7EF;
+            --light-text: #E2E8F0; /* Brighter light text */
             --dark-bg: #0a0a0a;
         }
 
@@ -26,506 +26,593 @@
             background: var(--dark-bg);
             color: var(--light-text);
             overflow-x: hidden;
+            opacity: 0;
+            transition: opacity .5s ease;
         }
 
         ::-webkit-scrollbar { width: 0; display: none; }
 
         /* Animated Stars Background */
-        .stars { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; }
+        .stars { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:-1; }
         .star { position:absolute; width:2px; height:2px; border-radius:50%; animation: float 20s infinite ease-in-out; }
         @keyframes float {
             0%,100% { transform: translateY(0) translateX(0); opacity: 0.3; }
             50% { transform: translateY(-30px) translateX(15px); opacity: 1; }
         }
 
-        /* Navbar */
-        .navbar { position: fixed; top:0; width:100%; padding:20px 50px; display:flex; justify-content:space-between; align-items:center; z-index:1000; transition: all .3s ease; }
-        .navbar.scrolled { background: rgba(15,23,42,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(34,211,238,0.2); }
-        .navbar .logo { font-size:24px; font-weight:800; color:var(--cyan); text-shadow: 0 0 20px rgba(34,211,238,0.5); }
-        .navbar nav a { margin-left:30px; color:var(--light-text); text-decoration:none; font-weight:500; transition: color .3s; font-size:14px; }
-        .navbar nav a:hover { color:var(--cyan); }
+        /* Header (Navbar) */
+        .site-header { position: fixed; top:0; width:100%; padding:20px 50px; display:flex; justify-content:space-between; align-items:center; z-index:1000; transition: all .3s ease; }
+        .site-header.scrolled { background: rgba(15,23,42,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(34,211,238,0.2); }
+        .site-header .logo { font-size:24px; font-weight:800; color:var(--cyan); text-shadow: 0 0 20px rgba(34,211,238,0.5); }
+        .site-header nav a { margin-left:30px; color:var(--light-text); text-decoration:none; font-weight:500; transition: color .3s; font-size:14px; }
+        .site-header nav a:hover { color:var(--cyan); }
 
         /* Hero */
-        .hero { position:relative; min-height:100vh; background:#000; display:flex; align-items:center; padding:0 100px; overflow:hidden; }
+        .hero { position:relative; min-height:100vh; display:flex; align-items:center; padding:0 100px; overflow:hidden; }
         .hero-image {
             position:absolute; left:80px; top:50%; transform: translateY(-50%); width:360px; height:360px; border-radius:50%;
-            background: linear-gradient(135deg,var(--cyan),var(--purple)); filter: drop-shadow(0 0 40px rgba(34,211,238,0.6));
-            z-index:2; display:flex; align-items:center; justify-content:center; font-size:110px; font-weight:800; color: rgba(255,255,255,0.9);
+            background: linear-gradient(135deg,var(--cyan),var(--purple)); filter: drop-shadow(0 0 50px rgba(34,211,238,0.5));
+            z-index:1; display:flex; align-items:center; justify-content:center; font-size:110px; font-weight:800; color: rgba(15, 23, 42, 0.8);
         }
         .hero-content { position:relative; margin-left:auto; max-width:640px; z-index:2; }
         .hero-location { display:flex; align-items:center; gap:8px; color:var(--gray); font-size:14px; margin-bottom:15px; }
         .hero-content h1 { font-size:56px; font-weight:800; background: linear-gradient(135deg,var(--cyan),var(--highlight)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px; line-height:1.05; }
-        .hero-content h2 { font-size:24px; font-weight:600; color:var(--purple); margin-bottom:18px; }
+        /* CHANGE: Added transition to h2 for smooth text change */
+        .hero-content h2 { font-size:24px; font-weight:600; color:var(--purple); margin-bottom:18px; transition: opacity 0.25s ease, text-shadow 0.25s ease; }
         .hero-content p { font-size:16px; line-height:1.8; color:var(--light-text); margin-bottom:28px; }
         .cta-button { display:inline-flex; align-items:center; gap:10px; padding:12px 28px; background:linear-gradient(135deg,var(--cyan),var(--purple)); color:white; text-decoration:none; border-radius:50px; font-weight:600; font-size:15px; box-shadow:0 10px 40px rgba(34,211,238,0.35); transition: all .25s; }
         .cta-button:hover { transform:translateY(-3px); box-shadow:0 15px 50px rgba(34,211,238,0.6); }
 
-        /* Sections */
+        /* General Section Styles */
         section { position:relative; padding:100px 100px; }
-        .about { background: linear-gradient(180deg,#16213E 0%, #0f3443 100%); }
-        .about-content { max-width:900px; margin:0 auto; opacity:0; transform: translateY(30px); transition: all .8s ease; }
-        .about-content.visible { opacity:1; transform: translateY(0); }
-        .about-content i { font-size:48px; color:var(--cyan); margin-bottom:20px; }
-        .about-content h2 { font-size:40px; margin-bottom:18px; color:var(--cyan); }
-        .about-content p { font-size:16px; line-height:1.7; color:var(--light-text); margin-bottom:12px; }
-        .about-goal { background: rgba(34,211,238,0.07); border-left:4px solid var(--cyan); padding:16px; border-radius:8px; margin-top:20px; }
-        .about-goal strong { color:var(--cyan); font-size:16px; }
-
         .section-title { text-align:center; font-size:36px; margin-bottom:40px; color:var(--cyan); text-shadow: 0 0 20px rgba(34,211,238,0.25); }
 
-        /* Skills */
+        /* About Section */
+        .about { background: linear-gradient(180deg, #0f172a 0%, #0a1120 100%); }
+        .about-content { max-width:900px; margin:0 auto; opacity:0; transform: translateY(30px); transition: opacity .8s ease, transform .8s ease; }
+        .about-content.visible { opacity:1; transform: translateY(0); }
+        .about-content i { font-size:48px; color:var(--cyan); margin-bottom:20px; display: block; text-align: center; }
+        .about-content h2 { font-size:40px; margin-bottom:18px; color:var(--cyan); text-align: center; }
+        .about-content p { font-size:16px; line-height:1.7; color:var(--light-text); margin-bottom:12px; }
+        .about-goal { background: rgba(34,211,238,0.07); border-left:4px solid var(--cyan); padding:16px 20px; border-radius:8px; margin-top:20px; font-size: 16px; line-height: 1.6;}
+        .about-goal strong { color:var(--cyan); font-weight: 600; }
+
+        /* Skills Section */
         .skills-container { max-width:1400px; margin:0 auto; }
         .skills-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:20px; }
-        .skill-item { background: rgba(34,211,238,0.04); backdrop-filter: blur(20px); border:1px solid rgba(34,211,238,0.12); border-radius:12px; padding:18px; transition: all .25s; }
-        .skill-item strong { color:var(--cyan); display:block; margin-bottom:8px; }
-        .skill-item span { color:var(--gray); font-size:14px; }
+        .skill-item { background: rgba(34,211,238,0.04); border:1px solid rgba(34,211,238,0.12); border-radius:12px; padding:20px; transition: all .25s; }
+        .skill-item:hover { transform: translateY(-5px); border-color: rgba(34,211,238,0.3); }
+        .skill-item strong { color:var(--cyan); display:block; margin-bottom:8px; font-size: 18px; }
+        .skill-item span { color:var(--gray); font-size:14px; line-height: 1.6; }
 
-        /* Projects */
-        .projects-grid { max-width:1400px; margin:0 auto; display:grid; gap:24px; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); }
-        .project-card { background: rgba(168,85,247,0.04); backdrop-filter: blur(20px); border:1px solid rgba(168,85,247,0.12); border-radius:16px; padding:28px; transition: all .3s; opacity:0; transform:translateY(20px); }
+        /* Projects Section */
+        .projects-grid { max-width:1400px; margin:0 auto; display:grid; gap:24px; grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); }
+        .project-card { background: rgba(168,85,247,0.04); border:1px solid rgba(168,85,247,0.12); border-radius:16px; padding:28px; transition: all .3s; opacity:0; transform:translateY(20px); display: flex; flex-direction: column; }
+        .project-card:hover { transform: translateY(-5px) scale(1.02); border-color: rgba(168,85,247,0.4); }
         .project-card.visible { opacity:1; transform:translateY(0); }
         .project-header { display:flex; gap:16px; align-items:flex-start; margin-bottom:12px; }
         .project-icon { font-size:40px; color:var(--purple); }
         .project-title h3 { font-size:22px; color:var(--purple); margin-bottom:6px; }
         .project-status { display:inline-block; padding:6px 12px; background: rgba(168,85,247,0.12); border-radius:14px; font-size:12px; color:var(--purple); font-weight:600; }
-        .project-card p { font-size:15px; line-height:1.6; color:var(--light-text); margin-bottom:10px; }
-        .project-tech { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+        .project-card p { font-size:15px; line-height:1.6; color:var(--light-text); margin-bottom:10px; flex-grow: 1; } /* Ensures paragraphs take up available space */
+        .project-tech { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
         .tech-tag { padding:6px 12px; background: rgba(34,211,238,0.06); border:1px solid rgba(34,211,238,0.12); border-radius:16px; font-size:13px; color:var(--cyan); font-weight:500; }
+        .project-github-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--purple);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 20px; /* Space above button */
+            transition: all 0.2s ease;
+            align-self: flex-start; /* Aligns button to the left */
+        }
+        .project-github-button:hover {
+            background: var(--cyan);
+            box-shadow: 0 5px 15px rgba(34,211,238,0.4);
+            transform: translateY(-2px);
+        }
 
-        /* Knowledge */
-        .knowledge-grid { max-width:1200px; margin:0 auto; display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:20px; }
-        .knowledge-item { background: rgba(0,255,163,0.04); border:1px solid rgba(0,255,163,0.08); border-radius:12px; padding:20px; }
-        .knowledge-item h4 { color:var(--highlight); margin-bottom:8px; }
-        .knowledge-item p { color:var(--light-text); font-size:14px; line-height:1.6; }
+        /* Education & Experience Section */
+        .education-experience-grid { max-width:1200px; margin:0 auto; display:grid; gap:24px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .education-card, .experience-card {
+            background: rgba(34,211,238,0.04);
+            border-radius:12px; padding:30px;
+            border:1px solid rgba(34,211,238,0.1);
+            text-align:center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .experience-card { text-align: left; align-items: flex-start; }
+        .education-card i { font-size:40px;color:var(--cyan); margin-bottom:15px; }
+        .education-card h3, .experience-card h3 { color:var(--cyan); margin-bottom:10px; font-size: 24px;}
+        .education-card h4 { color:var(--light-text); margin-bottom: 5px; font-size: 18px;}
+        .education-card p { color:var(--gray); margin-top:8px; font-size: 15px;}
+        .experience-card p { color:var(--light-text); margin-bottom:10px; font-size: 16px; line-height: 1.6;}
+        .experience-card ul { color:var(--gray); margin-left:25px; list-style-type: disc; font-size: 15px; line-height: 1.6;}
+        .experience-card ul li { margin-bottom: 5px; }
 
-        /* Education & Experience */
-        .education-card { max-width:900px; margin:0 auto; background: rgba(34,211,238,0.04); border-radius:12px; padding:30px; border:1px solid rgba(34,211,238,0.1); text-align:center; }
 
-        .experience-grid { max-width:1200px; margin:0 auto; display:grid; gap:16px; }
-        .experience-card { background: rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.03); padding:18px; border-radius:10px; }
-
-        /* Contact */
-        .contact { text-align:center; background: linear-gradient(180deg,#16213E 0%, #0f3443 100%); }
+        /* Contact Section */
+        .contact { text-align:center; background: linear-gradient(180deg,#0f172a 0%, #0a1120 100%); }
         .social-links { display:flex; justify-content:center; gap:40px; flex-wrap:wrap; margin-top:18px; }
         .social-link { display:flex; flex-direction:column; align-items:center; gap:10px; color:var(--light-text); text-decoration:none; }
         .social-link i { font-size:44px; color:var(--cyan); transition: all .25s; }
+        .social-link:hover i { transform: scale(1.1); color: var(--highlight); }
         .social-link span { font-size:14px; font-weight:600; color:var(--light-text); }
 
-        .footer { padding:28px; text-align:center; background:#000; color:var(--gray); font-size:13px; }
+        /* Footer */
+        .site-footer { padding:28px; text-align:center; background:#000; color:var(--gray); font-size:13px; }
 
         /* Responsive */
         @media (max-width:1400px) { section { padding-left:50px; padding-right:50px; } .hero-image { left:40px; } }
         @media (max-width:1024px) {
             .hero { flex-direction:column; justify-content:center; text-align:center; padding:120px 50px; }
             .hero-image { position:relative; left:0; transform:none; margin-bottom:30px; width:260px; height:260px; font-size:72px; }
-            .navbar nav { display:none; }
+            .site-header nav { display:none; }
         }
         @media (max-width:768px) {
-            .hero-content h1 { font-size:34px; }
-            .section-title { font-size:28px; }
+            .hero-content h1 { font-size:40px; }
+            .section-title { font-size:32px; }
             section { padding:60px 20px; }
-            .skills-grid, .projects-grid, .knowledge-grid { grid-template-columns: 1fr; }
+            .skills-grid, .projects-grid, .education-experience-grid { grid-template-columns: 1fr; }
+            .about-content i, .about-content h2 { text-align: left; } /* Align for smaller screens */
         }
     </style>
 </head>
 <body>
-    <!-- Animated Stars -->
     <div class="stars" id="stars"></div>
 
-    <!-- Navbar -->
-    <div class="navbar" id="navbar">
+    <header class="site-header" id="navbar">
         <div class="logo">DS</div>
         <nav>
             <a href="#home">Home</a>
             <a href="#about">About</a>
             <a href="#skills">Skills</a>
             <a href="#projects">Projects</a>
-            <a href="#experience">Experience</a>
+            <a href="#education-experience">Experience</a>
             <a href="#contact">Contact</a>
         </nav>
-    </div>
+    </header>
 
-    <!-- Hero -->
-    <section class="hero" id="home">
-        <div class="hero-image">DS</div>
-        <div class="hero-content">
-            <div class="hero-location">
-                <i class="fa fa-map-marker"></i>
-                <span>Biaora, Madhya Pradesh, India</span>
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-image">DS</div>
+            <div class="hero-content">
+                <div class="hero-location">
+                    <i class="fa fa-map-marker"></i>
+                    <span>Biaora, Madhya Pradesh, India</span>
+                </div>
+                <h1>Devanshu Sharma</h1>
+                <h2>Systems Developer & Rust Enthusiast</h2>
+                <p>First-year B.Tech CSE student who got into coding during the great lockdown of 2020 and never looked back. I'm building high-performance systems software with Rust, focusing on memory safety, concurrency, and shipping practical developer tools.</p>
+                <a href="#contact" class="cta-button"><i class="fa fa-paper-plane"></i> Let's Connect</a>
             </div>
-            <h1>Devanshu Sharma</h1>
-            <h2>Systems Developer & Rust Enthusiast</h2>
-            <p>B.Tech CSE student building high-performance systems software with Rust. I focus on memory safety, low-level architecture, async runtimes, and shipping practical tools that devs actually use.</p>
-            <a href="#contact" class="cta-button"><i class="fa fa-paper-plane"></i> Let's Connect</a>
-        </div>
-    </section>
+        </section>
 
-    <!-- About -->
-    <section class="about" id="about">
-        <div class="about-content">
-            <i class="fa fa-user"></i>
-            <h2>About Me</h2>
-            <p>I’m a first-year Computer Science student at the Institute of Engineering & Technology, Udaipur. I’ve been coding since 2020 and focus on systems design, Rust, and building cross-platform developer tools.</p>
-            <p>My approach is practical: I learn by shipping. I prefer small, high-impact projects — from desktop apps to command-line utilities and low-level libraries. I thrive in environments that value correctness, performance, and clean abstractions.</p>
-            <div class="about-goal">
-                <strong>Goal:</strong> Become a 10x developer — contribute to Rust ecosystem tooling, build reliable system software, and help teams ship safer, faster products.
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills -->
-    <section class="skills-section" id="skills">
-        <h2 class="section-title">Technical Arsenal</h2>
-        <div class="skills-container">
-            <div class="skills-grid">
-                <div class="skill-item">
-                    <strong>Rust</strong>
-                    <span>Primary language — ownership, lifetimes, async, traits, and systems design.</span>
-                </div>
-                <div class="skill-item">
-                    <strong>C / C++</strong>
-                    <span>Strong foundation in low-level programming, memory models, and performance reasoning.</span>
-                </div>
-                <div class="skill-item">
-                    <strong>Python</strong>
-                    <span>AI prototypes, scripting, data pipelines, and integration work (ClauseAI project).</span>
-                </div>
-                <div class="skill-item">
-                    <strong>JavaScript / TypeScript</strong>
-                    <span>Frontend integration (Svelte / React), API glue and UI for developer tools.</span>
-                </div>
-                <div class="skill-item">
-                    <strong>Tooling</strong>
-                    <span>Git, GitHub Actions, Cargo, Clippy, Rustfmt, CI/CD automation.</span>
-                </div>
-                <div class="skill-item">
-                    <strong>Cross-platform</strong>
-                    <span>Tauri, desktop app development (Windows/Linux), Android prototyping.</span>
+        <section class="about" id="about">
+            <div class="about-content">
+                <i class="fa fa-code"></i>
+                <h2>About Me</h2>
+                <p>I’m a Computer Science student at MLSU's Institute of Engineering & Technology, specializing in systems programming. I've been writing code since 2020, and my passion lies in using Rust to build correct, efficient, and reliable software—from low-level libraries to cross-platform desktop applications.</p>
+                <p>My philosophy is simple: I learn by building and shipping. I believe in practical, project-based knowledge and thrive in environments that value clean abstractions, performance, and robust engineering. I'm also a passionate game developer and a firm believer in open-source.</p>
+                <div class="about-goal">
+                    <strong>My Goal:</strong> To contribute to foundational open-source tooling in the Rust ecosystem, build reliable systems software, and collaborate with teams that are shipping fast and safe products. I'm actively seeking opportunities to apply my skills and grow as a systems developer.
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Projects -->
-    <section class="projects-section" id="projects">
-        <h2 class="section-title">Featured Projects</h2>
-        <div class="projects-grid">
-            <div class="project-card">
-                <div class="project-header">
-                    <i class="fa fa-desktop project-icon"></i>
-                    <div class="project-title">
-                        <h3>AutoCrate Installer GUI</h3>
-                        <span class="project-status">Production Ready</span>
+        <section class="skills-section" id="skills">
+            <h2 class="section-title">Technical Arsenal</h2>
+            <div class="skills-container">
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <strong>Rust</strong>
+                        <span>My current obsession; building fast, safe, and reliable software. Strong grasp of ownership, lifetimes, and async programming.</span>
+                    </div>
+                    <div class="skill-item">
+                        <strong>Tauri</strong>
+                        <span>My go-to tool for creating high-performance, cross-platform GUIs for my Rust applications (Windows, macOS, Linux).</span>
+                    </div>
+                    <div class="skill-item">
+                        <strong>Python</strong>
+                        <span>My go-to for scripting, automation, AI/ML prototyping, and data processing tasks.</span>
+                    </div>
+                    <div class="skill-item">
+                        <strong>JavaScript / TypeScript</strong>
+                        <span>Frontend development with Svelte and React for building reactive UIs and API integration for developer tools.</span>
+                    </div>
+                    <div class="skill-item">
+                        <strong>C / C++</strong>
+                        <span>Solid foundation in low-level programming, memory management, and performance optimization concepts.</span>
+                    </div>
+                    <div class="skill-item">
+                        <strong>Developer Tooling</strong>
+                        <span>Proficient with Git, GitHub Actions for CI/CD, Cargo, Clippy, Rustfmt, and creating ergonomic command-line experiences.</span>
+                    </div>
+                    <div class="skill-item">
+                        <strong>Game Development</strong>
+                        <span>Exploring the Unity side of the gaming world with C# and procedural generation concepts.</span>
+                    </div>
+                    <div class="skill-item">
+                        <strong>Linux & Bash</strong>
+                        <span>My preferred environment for getting things done. Proficient in Bash scripting for system automation.</span>
+                    </div>
+                    <div class="skill-item">
+                        <strong>Blender</strong>
+                        <span>Addicted to 3D design and modeling; using Blender for creative projects and spatial reasoning challenges.</span>
                     </div>
                 </div>
-                <p>Cross-platform installer built with <strong>Rust + Tauri + Svelte + DaisyUI</strong>. Reactive UI fetches GitHub release metadata, picks correct artifacts, and runs safe installations with robust error handling.</p>
-                <p><strong>Highlights:</strong> End-to-end ownership, fast backend, automated GitHub API integration, and modular architecture separating UI & logic.</p>
-                <div class="project-tech">
-                    <span class="tech-tag">Rust</span>
-                    <span class="tech-tag">Tauri</span>
-                    <span class="tech-tag">Svelte</span>
-                    <span class="tech-tag">GitHub API</span>
-                </div>
             </div>
+        </section>
 
-            <div class="project-card">
-                <div class="project-header">
-                    <i class="fa fa-database project-icon"></i>
-                    <div class="project-title">
-                        <h3>Redis-from-Scratch</h3>
-                        <span class="project-status">In Progress</span>
+        <section class="projects-section" id="projects">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid">
+                <article class="project-card">
+                    <div class="project-header">
+                        <i class="fa fa-desktop project-icon"></i>
+                        <div class="project-title">
+                            <h3>AutoCrate Installer GUI</h3>
+                            <span class="project-status">Production Ready</span>
+                        </div>
                     </div>
-                </div>
-                <p>Implementing an in-memory key-value store in pure Rust to learn systems internals: networking, efficient serialization, command parsing, and concurrent data structures.</p>
-                <p><strong>Learning Focus:</strong> TCP sockets, protocol design, lock-free / lock-minimizing patterns, and production-grade benchmarks.</p>
-                <div class="project-tech">
-                    <span class="tech-tag">Rust</span>
-                    <span class="tech-tag">TCP Sockets</span>
-                    <span class="tech-tag">Concurrency</span>
-                    <span class="tech-tag">Benchmarks</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="project-header">
-                    <i class="fa fa-terminal project-icon"></i>
-                    <div class="project-title">
-                        <h3>Linux CLI Utilities</h3>
-                        <span class="project-status">Ongoing</span>
+                    <p>A cross-platform installer built with <strong>Rust, Tauri, Svelte, and DaisyUI</strong>. This reactive GUI fetches GitHub release metadata, intelligently selects the correct artifacts, and performs safe, robust installations of my CLI tools with comprehensive error handling.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Rust</span>
+                        <span class="tech-tag">Tauri</span>
+                        <span class="tech-tag">Svelte</span>
+                        <span class="tech-tag">GitHub API</span>
+                        <span class="tech-tag">Desktop App</span>
                     </div>
-                </div>
-                <p>Set of lightweight command-line tools for file parsing, system stats, and robust error handling — showcasing idiomatic error propagation and ergonomics with <code>Result</code> and the <code>? </code> operator.</p>
-                <div class="project-tech">
-                    <span class="tech-tag">Rust</span>
-                    <span class="tech-tag">CLI</span>
-                    <span class="tech-tag">UX</span>
-                    <span class="tech-tag">Systems</span>
-                </div>
-            </div>
+                    <a href="https://github.com/sharmadevanshu089/Installer" target="_blank" rel="noopener noreferrer" class="project-github-button">
+                        <i class="fa fa-github"></i> View on GitHub
+                    </a>
+                </article>
 
-            <div class="project-card">
-                <div class="project-header">
-                    <i class="fa fa-code project-icon"></i>
-                    <div class="project-title">
-                        <h3>Clause AI</h3>
-                        <span class="project-status">Prototype</span>
+                <article class="project-card">
+                    <div class="project-header">
+                        <i class="fa fa-exchange project-icon"></i>
+                        <div class="project-title">
+                            <h3>Fillie File Sharing</h3>
+                            <span class="project-status">In Development</span>
+                        </div>
                     </div>
-                </div>
-                <p>AI integration project built with Python — models and tooling for text processing and automation. Demonstrates ability to integrate ML components into production pipelines and expose them via APIs.</p>
-                <p><strong>Repo:</strong> <a href="https://github.com/sharmadevanshu089/ClauseAI" target="_blank" style="color:var(--cyan)">github.com/sharmadevanshu089/ClauseAI</a></p>
-                <div class="project-tech">
-                    <span class="tech-tag">Python</span>
-                    <span class="tech-tag">ML</span>
-                    <span class="tech-tag">APIs</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <div class="project-header">
-                    <i class="fa fa-cube project-icon"></i>
-                    <div class="project-title">
-                        <h3>Blender 3D Models</h3>
-                        <span class="project-status">Completed</span>
+                    <p>A minimal, cross-platform file-sharing platform built in pure <strong>Rust</strong>. Fillie facilitates fast, secure, and serverless P2P file transfers across local networks, featuring AES-256 encryption and SHA256 integrity checks for robust data security.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Rust</span>
+                        <span class="tech-tag">Networking</span>
+                        <span class="tech-tag">Concurrency</span>
+                        <span class="tech-tag">P2P</span>
+                        <span class="tech-tag">Encryption</span>
                     </div>
+                    <a href="https://github.com/sharmadevanshu089/fillie" target="_blank" rel="noopener noreferrer" class="project-github-button">
+                        <i class="fa fa-github"></i> View on GitHub
+                    </a>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-header">
+                        <i class="fa fa-database project-icon"></i>
+                        <div class="project-title">
+                            <h3>Redis-from-Scratch (Rust)</h3>
+                            <span class="project-status">In Progress</span>
+                        </div>
+                    </div>
+                    <p>Implementing an in-memory key-value store in pure <strong>Rust</strong> to gain deep insights into systems internals: TCP networking, efficient serialization, command parsing, and designing high-performance concurrent data structures. Focus on lock-free/lock-minimizing patterns and production-grade benchmarks.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Rust</span>
+                        <span class="tech-tag">TCP Sockets</span>
+                        <span class="tech-tag">Concurrency</span>
+                        <span class="tech-tag">Systems Design</span>
+                    </div>
+                    <a href="https://github.com/sharmadevanshu089" target="_blank" rel="noopener noreferrer" class="project-github-button">
+                        <i class="fa fa-github"></i> View on GitHub
+                    </a>
+                </article>
+                
+                <article class="project-card">
+                    <div class="project-header">
+                        <i class="fa fa-gavel project-icon"></i>
+                        <div class="project-title">
+                            <h3>ClauseAI</h3>
+                            <span class="project-status">Prototype</span>
+                        </div>
+                    </div>
+                    <p>A full-stack, AI-driven tool for legal comprehension, built during a hackathon. It utilizes a **performant Rust backend** interfacing with the Google Gemini API to deliver actionable insights and summaries from complex legal documents, greatly enhancing user understanding.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Rust</span>
+                        <span class="tech-tag">Generative AI</span>
+                        <span class="tech-tag">APIs</span>
+                        <span class="tech-tag">NLP</span>
+                    </div>
+                    <a href="https://github.com/SharmaDevanshu089/Clause-AI" target="_blank" rel="noopener noreferrer" class="project-github-button">
+                        <i class="fa fa-github"></i> View on GitHub
+                    </a>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-header">
+                        <i class="fa fa-terminal project-icon"></i>
+                        <div class="project-title">
+                            <h3>AutoCrate CLI</h3>
+                            <span class="project-status">Production Ready</span>
+                        </div>
+                    </div>
+                    <p>A powerful **Rust CLI tool** that streamlines project initialization. It automatically creates sequential Rust projects, initializes Git repositories, and opens them in your preferred editor, significantly improving developer workflow and project setup time.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Rust</span>
+                        <span class="tech-tag">CLI</span>
+                        <span class="tech-tag">Developer Tool</span>
+                        <span class="tech-tag">Workflow Automation</span>
+                    </div>
+                    <a href="https://github.com/sharmadevanshu089/autocrate" target="_blank" rel="noopener noreferrer" class="project-github-button">
+                        <i class="fa fa-github"></i> View on GitHub
+                    </a>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-header">
+                        <i class="fa fa-keyboard-o project-icon"></i>
+                        <div class="project-title">
+                            <h3>From-User (Rust Input Helper)</h3>
+                            <span class="project-status">Production Ready</span>
+                        </div>
+                    </div>
+                    <p>A tiny, highly simplified **Rust library** designed to handle user input ergonomically. It provides robust error handling and clear type conversions, making it easier and safer to interact with user inputs in CLI applications.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Rust</span>
+                        <span class="tech-tag">CLI</span>
+                        <span class="tech-tag">Library</span>
+                        <span class="tech-tag">Error Handling</span>
+                    </div>
+                    <a href="https://github.com/sharmadevanshu089/input" target="_blank" rel="noopener noreferrer" class="project-github-button">
+                        <i class="fa fa-github"></i> View on GitHub
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <section id="education-experience">
+            <h2 class="section-title">Education & Experience</h2>
+            <div class="education-experience-grid">
+                <div class="education-card">
+                    <i class="fa fa-graduation-cap"></i>
+                    <h3>B.Tech in Computer Science & Engineering</h3>
+                    <h4>Institute of Engineering & Technology, Udaipur</h4>
+                    <p>Class of 2028 &bull; First Year Student</p>
                 </div>
-                <p>Large-scale architectural models (e.g., detailed Burj Khalifa) for events — demonstrates spatial reasoning, attention to detail, and project delivery under constraints.</p>
-                <div class="project-tech">
-                    <span class="tech-tag">Blender</span>
-                    <span class="tech-tag">3D</span>
-                    <span class="tech-tag">Design</span>
+
+                <div class="experience-card">
+                    <h3>Hackathons & Competitions</h3>
+                    <p>I'm an active participant in college and online hackathons, consistently focused on rapid prototyping and delivering working solutions under pressure. I thrive on integrating **Rust backends** with lightweight frontends to deploy minimum viable features quickly.</p>
+                    <ul>
+                        <li>**Shipped multiple working prototypes** within 24–48 hours, covering both backend logic and user interface design.</li>
+                        <li>Gained extensive experience in **presenting technical demos**, writing concise documentation, and effectively responding to feedback in fast-paced environments.</li>
+                        <li>Regularly take ownership of **backend architecture, protocol design, and cross-platform integration layers** during these events.</li>
+                    </ul>
+                </div>
+
+                <div class="experience-card">
+                    <h3>Internship Readiness & Project Delivery</h3>
+                    <p>Though early in formal titles, I possess hands-on project delivery experience, including shipping a cross-platform desktop application in 3 weeks, building foundational infrastructure tools, and integrating AI prototypes. I am eager for **internship opportunities** where I can apply my systems programming skills and contribute to a team.</p>
+                    <ul>
+                        <li>**Quick ramp-up ability**: I can rapidly learn unfamiliar codebases and make small, testable, and impactful contributions.</li>
+                        <li>**Production mindset**: Familiar with best practices in logging, CI/CD automation, release processes, and monitoring considerations for reliable software.</li>
+                        <li>Comfortable collaborating with senior engineers, actively participating in code reviews, and iterating quickly based on feedback.</li>
+                    </ul>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Experience & Hackathons -->
-    <section id="experience">
-        <h2 class="section-title">Experience & Hackathons</h2>
-        <div class="experience-grid">
-            <div class="experience-card">
-                <h3 style="color:var(--cyan); margin-bottom:8px;">Hackathons & Competitions</h3>
-                <p style="color:var(--light-text); margin-bottom:8px;">
-                    Active participant in college and online hackathons — focused on rapid prototyping, integration of Rust backends with lightweight frontends, and deploying minimum viable features fast. I take ownership of backend, protocol, and integration layers during events.
-                </p>
-                <ul style="color:var(--gray); margin-left:18px;">
-                    <li>Multiple hackathons — shipped working prototypes within 24–48 hours (backend + UI).</li>
-                    <li>Experience presenting demos, writing concise technical docs, and responding to feedback under time pressure.</li>
-                </ul>
+        <section class="contact" id="contact">
+            <h2>Let's Build Together</h2>
+            <p style="color:var(--gray); max-width:800px; margin:10px auto 18px;">
+                I'm actively seeking project-based contributions, **internships**, remote collaborations, and mentorship. I move fast, learn fast, and prefer contributing practical code and tools. If you have an idea or just want to talk tech, feel free to reach out!
+            </p>
+            <div class="social-links">
+                <a href="https://github.com/sharmadevanshu089" class="social-link" target="_blank" rel="noopener noreferrer">
+                    <i class="fa fa-github"></i>
+                    <span>GitHub</span>
+                </a>
+                <a href="mailto:sharma.devanshu089@gmail.com" class="social-link">
+                    <i class="fa fa-envelope"></i>
+                    <span>Email</span>
+                </a>
+                <a href="https://www.linkedin.com/in/sharmadevanshu089/" class="social-link" target="_blank" rel="noopener noreferrer">
+                    <i class="fa fa-linkedin"></i>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="https://www.youtube.com/@PotatoAsUserName" class="social-link" target="_blank" rel="noopener noreferrer">
+                    <i class="fa fa-youtube"></i>
+                    <span>YouTube</span>
+                </a>
             </div>
+        </section>
+    </main>
 
-            <div class="experience-card">
-                <h3 style="color:var(--cyan); margin-bottom:8px;">Internship / Project Readiness</h3>
-                <p style="color:var(--light-text); margin-bottom:8px;">
-                    I may be early in formal titles, but I have hands-on project delivery experience: shipping a desktop app in 3 weeks, building infrastructure tools, and integrating AI prototypes. Comfortable working with senior engineers, following code reviews, and iterating quickly.
-                </p>
-                <ul style="color:var(--gray); margin-left:18px;">
-                    <li>Quick ramp: learn an unfamiliar codebase and produce small, testable contributions.</li>
-                    <li>Production mindset: logging, CI, release automation, and monitoring considerations.</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- Knowledge -->
-    <section class="knowledge-section">
-        <h2 class="section-title">Deep Knowledge Areas</h2>
-        <div class="knowledge-grid">
-            <div class="knowledge-item">
-                <h4>Ownership & Borrowing</h4>
-                <p>Expert at designing safe, zero-cost abstractions using Rust's ownership model and lifetimes for correctness without sacrificing performance.</p>
-            </div>
-            <div class="knowledge-item">
-                <h4>Error Handling</h4>
-                <p>Practiced with Result, Option, custom error types, and graceful propagation. Build tools that fail loudly & clearly for fast debugging.</p>
-            </div>
-            <div class="knowledge-item">
-                <h4>Concurrency & Async</h4>
-                <p>Practical experience with async runtimes, threads, channels, and Arc/Mutex patterns — focus on predictable, maintainable concurrency.</p>
-            </div>
-            <div class="knowledge-item">
-                <h4>Cargo & Ecosystem</h4>
-                <p>Deep familiarity with workspaces, crate management, dependency hygiene, and release workflows in the Rust ecosystem.</p>
-            </div>
-            <div class="knowledge-item">
-                <h4>Cross-Language Interop</h4>
-                <p>Comfortable with FFI, C bindings, and integrating Rust modules into existing C/C++ codebases or exposing functionality to Python/JS.</p>
-            </div>
-            <div class="knowledge-item">
-                <h4>Codebase Analysis</h4>
-                <p>Ability to read, understand, and contribute to large codebases. I prioritize minimal, well-tested changes over risky large refactors.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Education -->
-    <section class="education-section" id="education">
-        <h2 class="section-title">Education</h2>
-        <div class="education-card">
-            <i class="fa fa-graduation-cap" style="font-size:40px;color:var(--cyan); margin-bottom:10px;"></i>
-            <h3>B.Tech in Computer Science & Engineering</h3>
-            <h4>Institute of Engineering & Technology, Udaipur</h4>
-            <p style="color:var(--gray); margin-top:8px;">Class of 2028 • First Year Student</p>
-        </div>
-    </section>
-
-    <!-- Goals -->
-    <section class="goals-section">
-        <h2 class="section-title">Current Goals & Vision</h2>
-        <div class="projects-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px,1fr));">
-            <div class="project-card visible">
-                <h3 style="color:var(--purple); margin-bottom:8px;">Contribute to Rust</h3>
-                <p>Regularly contribute to tools & crates — target: make meaningful PRs to Rust ecosystem projects and Rust Foundation initiatives.</p>
-            </div>
-            <div class="project-card visible">
-                <h3 style="color:var(--purple); margin-bottom:8px;">Master Systems</h3>
-                <p>Deep-dive into async runtimes, build systems, and compiler internals to build robust developer tooling.</p>
-            </div>
-            <div class="project-card visible">
-                <h3 style="color:var(--purple); margin-bottom:8px;">Build Tools</h3>
-                <p>Create practical developer tools and integrations that improve developer velocity and reliability.</p>
-            </div>
-            <div class="project-card visible">
-                <h3 style="color:var(--purple); margin-bottom:8px;">Ship Consistently</h3>
-                <p>Keep momentum: small, well-tested releases that demonstrate ownership and production-readiness.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact -->
-    <section class="contact" id="contact">
-        <h2>Let's Build Together</h2>
-        <p style="color:var(--gray); max-width:800px; margin:10px auto 18px;">
-            Open to project-based contributions, internships, remote collaborations, and mentorship. I move fast, learn fast, and prefer contributing practical code and tools.
-        </p>
-        <div class="social-links">
-            <a href="https://github.com/sharmadevanshu089" class="social-link" target="_blank">
-                <i class="fa fa-github"></i>
-                <span>GitHub</span>
-            </a>
-            <a href="mailto:sharma.devanshu089@gmail.com" class="social-link">
-                <i class="fa fa-envelope"></i>
-                <span>Email</span>
-            </a>
-            <a href="https://www.linkedin.com/in/sharmadevanshu089/" class="social-link" target="_blank">
-                <i class="fa fa-linkedin"></i>
-                <span>LinkedIn</span>
-            </a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2025 Devanshu Sharma • Built with passion for systems programming • Powered by Rust 🦀</p>
+    <footer class="site-footer">
+        <p>&copy; 2025 Devanshu Sharma &bull; Built with a passion for systems programming &bull; Powered by Rust 🦀</p>
     </footer>
 
     <script>
-        // Generate animated stars
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            const colors = ['#00ff99', '#00aaff', '#33ccff', '#a855f7', '#00ffa3', '#22D3EE'];
-            const starCount = 120;
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                star.style.animationDelay = Math.random() * 20 + 's';
-                star.style.animationDuration = (12 + Math.random() * 12) + 's';
-                starsContainer.appendChild(star);
-            }
-        }
-        createStars();
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            /**
+             * Initializes and populates the animated stars background.
+             */
+            function initAnimatedStars() {
+                const container = document.getElementById('stars');
+                if (!container) return;
+                
+                const colors = ['#00ff99', '#00aaff', '#33ccff', '#a855f7', '#00ffa3', '#22D3EE'];
+                const starCount = 120;
+                const fragment = document.createDocumentFragment();
 
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) navbar.classList.add('scrolled');
-            else navbar.classList.remove('scrolled');
-        });
-
-        // Intersection Observer for fade-in animations
-        const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -60px 0px' };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.about-content, .project-card, .knowledge-item, .education-card, .experience-card').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Smooth scroll for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    const offset = 80;
-                    const elementPosition = target.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - offset;
-                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    star.style.left = `${Math.random() * 100}%`;
+                    star.style.top = `${Math.random() * 100}%`;
+                    star.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    star.style.animationDelay = `${Math.random() * 20}s`;
+                    star.style.animationDuration = `${12 + Math.random() * 12}s`;
+                    fragment.appendChild(star);
                 }
-            });
+                container.appendChild(fragment);
+            }
+
+            /**
+             * Handles the navbar style change on scroll.
+             */
+            function initNavbarScroll() {
+                const navbar = document.getElementById('navbar');
+                if (!navbar) return;
+
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 80) {
+                        navbar.classList.add('scrolled');
+                    } else {
+                        navbar.classList.remove('scrolled');
+                    }
+                }, { passive: true });
+            }
+
+            /**
+             * Sets up Intersection Observer to animate elements on scroll.
+             */
+            function initIntersectionObserver() {
+                const options = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+                const observer = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            // We don't unobserve for project cards to allow hover animations after they are visible.
+                            // For .about-content, we can unobserve if it's not going to change visibility.
+                            if (entry.target.classList.contains('about-content')) {
+                                obs.unobserve(entry.target); 
+                            }
+                        }
+                    });
+                }, options);
+
+                // Observe about section, project cards, and experience/education cards
+                document.querySelectorAll('.about-content, .project-card, .education-card, .experience-card').forEach(el => observer.observe(el));
+            }
+
+            /**
+             * Animates the hero section's subtitle.
+             */
+            function initDynamicRoles() {
+                const heroTitle = document.querySelector('.hero-content h2');
+                if (!heroTitle) return;
+
+                const roles = [
+                    'Systems Developer & Rust Enthusiast',
+                    'Open Source Contributor',
+                    'Cross-Platform Tool Builder',
+                    'Memory Safety Advocate',
+                    'Passionate Game Developer'
+                ];
+                let currentRoleIndex = 0;
+
+                setInterval(() => {
+                    currentRoleIndex = (currentRoleIndex + 1) % roles.length;
+                    heroTitle.style.opacity = '0';
+                    heroTitle.style.textShadow = 'none'; // Temporarily remove shadow for cleaner transition
+                    setTimeout(() => {
+                        heroTitle.textContent = roles[currentRoleIndex];
+                        heroTitle.style.opacity = '1';
+                        heroTitle.style.textShadow = '0 0 10px rgba(168,85,247,0.3)'; // Restore subtle shadow
+                    }, 250);
+                }, 4000);
+            }
+
+            /**
+             * Adds a subtle custom cursor for desktop users.
+             */
+            function initCustomCursor() {
+                if (window.matchMedia("(pointer: coarse)").matches) return; // Don't run on touch devices
+
+                const cursor = document.createElement('div');
+                cursor.style.cssText = `
+                    position: fixed; width: 18px; height: 18px; border: 2px solid rgba(34,211,238,0.5);
+                    border-radius: 50%; pointer-events: none; z-index: 9999; 
+                    transition: transform .18s ease, border-color .18s ease; left: -50px; top: -50px;
+                `;
+                document.body.appendChild(cursor);
+
+                document.addEventListener('mousemove', (e) => {
+                    cursor.style.left = `${e.clientX - 9}px`;
+                    cursor.style.top = `${e.clientY - 9}px`;
+                });
+                
+                document.querySelectorAll('a, button, .skill-item, .project-card').forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        cursor.style.transform = 'scale(1.4)';
+                        cursor.style.borderColor = 'rgba(0,255,163,0.9)';
+                    });
+                    el.addEventListener('mouseleave', () => {
+                        cursor.style.transform = 'scale(1)';
+                        cursor.style.borderColor = 'rgba(34,211,238,0.5)';
+                    });
+                });
+            }
+
+            /**
+             * Implements smooth scrolling for internal navigation links.
+             */
+            function initSmoothScrolling() {
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const target = document.querySelector(this.getAttribute('href'));
+                        if (target) {
+                            const offset = 80; // Height of fixed navbar
+                            const elementPosition = target.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - offset;
+                            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                        }
+                    });
+                });
+            }
+
+            /**
+             * Applies a staggered delay to project card animations.
+             */
+            function initProjectCardStagger() {
+                const projectCards = document.querySelectorAll('.project-card');
+                projectCards.forEach((card, index) => card.style.transitionDelay = `${index * 0.08}s`);
+            }
+
+            // --- Initialize all scripts ---
+            initAnimatedStars();
+            initNavbarScroll();
+            initIntersectionObserver();
+            initDynamicRoles();
+            initCustomCursor();
+            initSmoothScrolling(); // Re-added smooth scrolling
+            initProjectCardStagger(); // Ensure project cards stagger correctly
+
+            // Fade in the body after everything is ready
+            // CHANGE: Added a small delay to ensure CSS is parsed before fade-in
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100); 
+
+            // Console message
+            console.log('%c🦀 Welcome! This portfolio is built with a passion for performant code.', 'color: #00FFA3; font-size: 14px; font-weight: bold;');
+            console.log('%cYou can find the source on my GitHub: github.com/sharmadevanshu089', 'color:#22D3EE;');
         });
-
-        // Parallax effect for hero
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero');
-            if (hero && scrolled < window.innerHeight) hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-        });
-
-        // Project card stagger
-        const projectCards = document.querySelectorAll('.project-card');
-        projectCards.forEach((card, index) => card.style.transitionDelay = `${index * 0.08}s`);
-
-        // Dynamic hero roles
-        const heroTitle = document.querySelector('.hero-content h2');
-        if (heroTitle) {
-            const roles = [
-                'Systems Developer & Rust Enthusiast',
-                'Open Source Contributor',
-                'Performance Optimization Geek',
-                'Memory Safety Advocate'
-            ];
-            let currentRole = 0;
-            setInterval(() => {
-                currentRole = (currentRole + 1) % roles.length;
-                heroTitle.style.opacity = '0';
-                setTimeout(() => {
-                    heroTitle.textContent = roles[currentRole];
-                    heroTitle.style.opacity = '1';
-                }, 250);
-            }, 4200);
-        }
-
-        // Loading fade
-        window.addEventListener('load', () => {
-            document.body.style.opacity = '0';
-            setTimeout(() => { document.body.style.transition = 'opacity .5s ease'; document.body.style.opacity = '1'; }, 80);
-        });
-
-        // Console message
-        console.log('%c🦀 Built with Rust in mind! 🦀', 'color: #00FFA3; font-size: 16px; font-weight: bold;');
-        console.log('%cGitHub: github.com/sharmadevanshu089', 'color:#22D3EE;');
-
-        // Custom cursor (subtle)
-        let cursor = document.createElement('div');
-        cursor.style.cssText = `
-            position: fixed; width: 18px; height: 18px; border: 2px solid rgba(34,211,238,0.5);
-            border-radius: 50%; pointer-events: none; z-index: 9999; transition: transform .18s ease; display:none;
-        `;
-        document.body.appendChild(cursor);
-        if (window.innerWidth > 768) {
-            cursor.style.display = 'block';
-            document.addEventListener('mousemove', (e) => { cursor.style.left = e.clientX - 9 + 'px'; cursor.style.top = e.clientY - 9 + 'px'; });
-            document.querySelectorAll('a, button, .skill-item, .project-card').forEach(el => {
-                el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(1.35)'; cursor.style.borderColor = 'rgba(0,255,163,0.9)'; });
-                el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; cursor.style.borderColor = 'rgba(34,211,238,0.5)'; });
-            });
-        }
     </script>
 </body>
 </html>
