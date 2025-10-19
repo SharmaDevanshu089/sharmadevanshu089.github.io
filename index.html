@@ -12,10 +12,10 @@
         :root {
             --navy: #0F172A;
             --cyan: #22D3EE;
-            --gray: #94A3B8; /* Lighter gray for better contrast */
+            --gray: #94A3B8;
             --highlight: #00FFA3;
             --purple: #A855F7;
-            --light-text: #E2E8F0; /* Brighter light text */
+            --light-text: #E2E8F0;
             --dark-bg: #0a0a0a;
         }
 
@@ -32,7 +32,6 @@
 
         ::-webkit-scrollbar { width: 0; display: none; }
 
-        /* Animated Stars Background */
         .stars { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:-1; }
         .star { position:absolute; width:2px; height:2px; border-radius:50%; animation: float 20s infinite ease-in-out; }
         @keyframes float {
@@ -40,14 +39,12 @@
             50% { transform: translateY(-30px) translateX(15px); opacity: 1; }
         }
 
-        /* Header (Navbar) */
         .site-header { position: fixed; top:0; width:100%; padding:20px 50px; display:flex; justify-content:space-between; align-items:center; z-index:1000; transition: all .3s ease; }
         .site-header.scrolled { background: rgba(15,23,42,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(34,211,238,0.2); }
         .site-header .logo { font-size:24px; font-weight:800; color:var(--cyan); text-shadow: 0 0 20px rgba(34,211,238,0.5); }
         .site-header nav a { margin-left:30px; color:var(--light-text); text-decoration:none; font-weight:500; transition: color .3s; font-size:14px; }
         .site-header nav a:hover { color:var(--cyan); }
 
-        /* Hero */
         .hero { position:relative; min-height:100vh; display:flex; align-items:center; padding:0 100px; overflow:hidden; }
         .hero-image {
             position:absolute; left:80px; top:50%; transform: translateY(-50%); width:360px; height:360px; border-radius:50%;
@@ -62,11 +59,9 @@
         .cta-button { display:inline-flex; align-items:center; gap:10px; padding:12px 28px; background:linear-gradient(135deg,var(--cyan),var(--purple)); color:white; text-decoration:none; border-radius:50px; font-weight:600; font-size:15px; box-shadow:0 10px 40px rgba(34,211,238,0.35); transition: all .25s; }
         .cta-button:hover { transform:translateY(-3px); box-shadow:0 15px 50px rgba(34,211,238,0.6); }
 
-        /* General Section Styles */
         section { position:relative; padding:100px 100px; }
         .section-title { text-align:center; font-size:36px; margin-bottom:40px; color:var(--cyan); text-shadow: 0 0 20px rgba(34,211,238,0.25); }
 
-        /* About Section */
         .about { background: linear-gradient(180deg, #0f172a 0%, #0a1120 100%); }
         .about-content { max-width:900px; margin:0 auto; opacity:0; transform: translateY(30px); transition: opacity .8s ease, transform .8s ease; }
         .about-content.visible { opacity:1; transform: translateY(0); }
@@ -76,7 +71,6 @@
         .about-goal { background: rgba(34,211,238,0.07); border-left:4px solid var(--cyan); padding:16px 20px; border-radius:8px; margin-top:20px; font-size: 16px; line-height: 1.6;}
         .about-goal strong { color:var(--cyan); font-weight: 600; }
 
-        /* Skills Section */
         .skills-container { max-width:1400px; margin:0 auto; }
         .skills-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:20px; }
         .skill-item { background: rgba(34,211,238,0.04); border:1px solid rgba(34,211,238,0.12); border-radius:12px; padding:20px; transition: all .25s; }
@@ -84,7 +78,6 @@
         .skill-item strong { color:var(--cyan); display:block; margin-bottom:8px; font-size: 18px; }
         .skill-item span { color:var(--gray); font-size:14px; line-height: 1.6; }
 
-        /* Projects Section */
         .projects-grid { max-width:1400px; margin:0 auto; display:grid; gap:24px; grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); }
         .project-card { background: rgba(168,85,247,0.04); border:1px solid rgba(168,85,247,0.12); border-radius:16px; padding:28px; transition: all .3s; opacity:0; transform:translateY(20px); display: flex; flex-direction: column; }
         .project-card:hover { transform: translateY(-5px) scale(1.02); border-color: rgba(168,85,247,0.4); }
@@ -93,46 +86,35 @@
         .project-icon { font-size:40px; color:var(--purple); }
         .project-title h3 { font-size:22px; color:var(--purple); margin-bottom:6px; }
         .project-status { display:inline-block; padding:6px 12px; background: rgba(168,85,247,0.12); border-radius:14px; font-size:12px; color:var(--purple); font-weight:600; }
+        /* CHANGE: Styling for the dynamic version badge */
+        .version-badge { color: var(--highlight); font-weight: 700; margin-left: 4px; }
         .project-card p { font-size:15px; line-height:1.6; color:var(--light-text); margin-bottom:10px; flex-grow: 1; }
         .project-tech { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
         .tech-tag { padding:6px 12px; background: rgba(34,211,238,0.06); border:1px solid rgba(34,211,238,0.12); border-radius:16px; font-size:13px; color:var(--cyan); font-weight:500; }
-        .project-github-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background: var(--purple);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 14px;
-            margin-top: 20px;
-            transition: all 0.2s ease;
-            align-self: flex-start;
+        .project-buttons { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .project-button {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 10px 20px; color: white; text-decoration: none; border-radius: 25px;
+            font-weight: 600; font-size: 14px; transition: all 0.2s ease;
         }
-        .project-github-button:hover {
-            background: var(--cyan);
-            box-shadow: 0 5px 15px rgba(34,211,238,0.4);
-            transform: translateY(-2px);
-        }
+        .project-button.github { background: var(--purple); }
+        .project-button.github:hover { background: var(--cyan); box-shadow: 0 5px 15px rgba(34,211,238,0.4); transform: translateY(-2px); }
+        /* CHANGE: Styling for new download button */
+        .project-button.download { background: var(--highlight); color: var(--dark-bg); }
+        .project-button.download:hover { background: white; box-shadow: 0 5px 15px rgba(255,255,255,0.2); transform: translateY(-2px); }
 
-        /* Education & Experience Section */
-        .education-experience-grid { max-width:1200px; margin:0 auto; display:grid; gap:24px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .education-experience-grid { max-width:1200px; margin:0 auto; display:grid; gap:24px; grid-template-columns: 1fr; }
+        /* CHANGE: Added a grid for the hackathon cards */
+        .hackathon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; width: 100%;}
         .education-card, .experience-card {
-            background: rgba(34,211,238,0.04);
-            border-radius:12px; padding:30px;
-            border:1px solid rgba(34,211,238,0.1);
-            text-align:center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            background: rgba(34,211,238,0.04); border-radius:12px; padding:30px;
+            border:1px solid rgba(34,211,238,0.1); display: flex; flex-direction: column;
         }
+        .education-card { text-align:center; align-items: center; justify-content: center; }
         .experience-card { text-align: left; align-items: flex-start; }
         .education-card i { font-size:40px;color:var(--cyan); margin-bottom:15px; }
         .education-card h3, .experience-card h3 { color:var(--cyan); margin-bottom:10px; font-size: 24px;}
+        .experience-card h4 { color:var(--highlight); margin-bottom:10px; font-size: 18px; font-weight: 600; }
         .education-card h4 { color:var(--light-text); margin-bottom: 5px; font-size: 18px;}
         .education-card p { color:var(--gray); margin-top:8px; font-size: 15px;}
         .experience-card p { color:var(--light-text); margin-bottom:10px; font-size: 16px; line-height: 1.6;}
@@ -140,7 +122,6 @@
         .experience-card ul li { margin-bottom: 5px; }
 
 
-        /* Contact Section */
         .contact { text-align:center; background: linear-gradient(180deg,#0f172a 0%, #0a1120 100%); }
         .social-links { display:flex; justify-content:center; gap:40px; flex-wrap:wrap; margin-top:18px; }
         .social-link { display:flex; flex-direction:column; align-items:center; gap:10px; color:var(--light-text); text-decoration:none; }
@@ -148,10 +129,8 @@
         .social-link:hover i { transform: scale(1.1); color: var(--highlight); }
         .social-link span { font-size:14px; font-weight:600; color:var(--light-text); }
 
-        /* Footer */
         .site-footer { padding:28px; text-align:center; background:#000; color:var(--gray); font-size:13px; }
 
-        /* Responsive */
         @media (max-width:1400px) { section { padding-left:50px; padding-right:50px; } .hero-image { left:40px; } }
         @media (max-width:1024px) {
             .hero { flex-direction:column; justify-content:center; text-align:center; padding:120px 50px; }
@@ -162,7 +141,7 @@
             .hero-content h1 { font-size:40px; }
             .section-title { font-size:32px; }
             section { padding:60px 20px; }
-            .skills-grid, .projects-grid, .education-experience-grid { grid-template-columns: 1fr; }
+            .skills-grid, .projects-grid, .hackathon-grid { grid-template-columns: 1fr; }
             .about-content i, .about-content h2 { text-align: left; }
         }
     </style>
@@ -213,42 +192,15 @@
             <h2 class="section-title">Technical Arsenal</h2>
             <div class="skills-container">
                 <div class="skills-grid">
-                    <div class="skill-item">
-                        <strong>Rust</strong>
-                        <span>My current obsession; building fast, safe, and reliable software. Strong grasp of ownership, lifetimes, and async programming.</span>
-                    </div>
-                    <div class="skill-item">
-                        <strong>Tauri</strong>
-                        <span>My go-to tool for creating high-performance, cross-platform GUIs for my Rust applications (Windows, macOS, Linux).</span>
-                    </div>
-                    <div class="skill-item">
-                        <strong>Python</strong>
-                        <span>My go-to for scripting, automation, AI/ML prototyping, and data processing tasks.</span>
-                    </div>
-                    <div class="skill-item">
-                        <strong>JavaScript / TypeScript</strong>
-                        <span>Frontend development with Svelte and React for building reactive UIs and API integration for developer tools.</span>
-                    </div>
-                    <div class="skill-item">
-                        <strong>C / C++</strong>
-                        <span>Solid foundation in low-level programming, memory management, and performance optimization concepts.</span>
-                    </div>
-                    <div class="skill-item">
-                        <strong>Developer Tooling</strong>
-                        <span>Proficient with Git, GitHub Actions for CI/CD, Cargo, Clippy, Rustfmt, and creating ergonomic command-line experiences.</span>
-                    </div>
-                    <div class="skill-item">
-                        <strong>Game Development</strong>
-                        <span>Exploring the Unity side of the gaming world with C# and procedural generation concepts.</span>
-                    </div>
-                    <div class="skill-item">
-                        <strong>Linux & Bash</strong>
-                        <span>My preferred environment for getting things done. Proficient in Bash scripting for system automation.</span>
-                    </div>
-                    <div class="skill-item">
-                        <strong>Blender</strong>
-                        <span>Addicted to 3D design and modeling; using Blender for creative projects and spatial reasoning challenges.</span>
-                    </div>
+                    <div class="skill-item"><strong>Rust</strong><span>My current obsession; building fast, safe, and reliable software. Strong grasp of ownership, lifetimes, and async programming.</span></div>
+                    <div class="skill-item"><strong>Tauri</strong><span>My go-to tool for creating high-performance, cross-platform GUIs for my Rust applications (Windows, macOS, Linux).</span></div>
+                    <div class="skill-item"><strong>Python</strong><span>My go-to for scripting, automation, AI/ML prototyping, and data processing tasks.</span></div>
+                    <div class="skill-item"><strong>JavaScript / TypeScript</strong><span>Frontend development with Svelte and React for building reactive UIs and API integration for developer tools.</span></div>
+                    <div class="skill-item"><strong>C / C++</strong><span>Solid foundation in low-level programming, memory management, and performance optimization concepts.</span></div>
+                    <div class="skill-item"><strong>Developer Tooling</strong><span>Proficient with Git, GitHub Actions for CI/CD, Cargo, Clippy, Rustfmt, and creating ergonomic command-line experiences.</span></div>
+                    <div class="skill-item"><strong>Game Development</strong><span>Exploring the Unity side of the gaming world with C# and procedural generation concepts.</span></div>
+                    <div class="skill-item"><strong>Linux & Bash</strong><span>My preferred environment for getting things done. Proficient in Bash scripting for system automation.</span></div>
+                    <div class="skill-item"><strong>Blender</strong><span>Addicted to 3D design and modeling; using Blender for creative projects and spatial reasoning challenges.</span></div>
                 </div>
             </div>
         </section>
@@ -256,70 +208,50 @@
         <section class="projects-section" id="projects">
             <h2 class="section-title">Featured Projects</h2>
             <div class="projects-grid">
-                <article class="project-card">
+                <!-- CHANGE: Added data-repo for API fetching and download button -->
+                <article class="project-card" data-repo="Installer">
                     <div class="project-header">
                         <i class="fa fa-desktop project-icon"></i>
                         <div class="project-title">
                             <h3>AutoCrate Installer GUI</h3>
-                            <span class="project-status">Production Ready</span>
+                            <span class="project-status">Version <span class="version-badge">...</span></span>
                         </div>
                     </div>
-                    <p>A cross-platform installer built with <strong>Rust, Tauri, Svelte, and DaisyUI</strong>. This reactive GUI fetches GitHub release metadata, intelligently selects the correct artifacts, and performs safe, robust installations of my CLI tools with comprehensive error handling.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Rust</span>
-                        <span class="tech-tag">Tauri</span>
-                        <span class="tech-tag">Svelte</span>
-                        <span class="tech-tag">GitHub API</span>
-                        <span class="tech-tag">Desktop App</span>
+                    <p>A cross-platform installer built with <strong>Rust, Tauri, and Svelte</strong>. This reactive GUI fetches GitHub release metadata, intelligently selects the correct artifacts, and performs safe, robust installations of my CLI tools with comprehensive error handling.</p>
+                    <div class="project-tech"><span class="tech-tag">Rust</span><span class="tech-tag">Tauri</span><span class="tech-tag">Svelte</span><span class="tech-tag">GitHub API</span><span class="tech-tag">Desktop App</span></div>
+                    <div class="project-buttons">
+                        <a href="https://github.com/sharmadevanshu089/Installer" target="_blank" rel="noopener noreferrer" class="project-button github"><i class="fa fa-github"></i> View on GitHub</a>
+                        <a href="https://github.com/sharmadevanshu089/Installer/releases" target="_blank" rel="noopener noreferrer" class="project-button download"><i class="fa fa-download"></i> Download Latest</a>
                     </div>
-                    <a href="https://github.com/sharmadevanshu089/Installer" target="_blank" rel="noopener noreferrer" class="project-github-button">
-                        <i class="fa fa-github"></i> View on GitHub
-                    </a>
                 </article>
 
-                <article class="project-card">
+                <article class="project-card" data-repo="fillie">
                     <div class="project-header">
                         <i class="fa fa-exchange project-icon"></i>
                         <div class="project-title">
                             <h3>Fillie File Sharing</h3>
-                            <span class="project-status">In Development</span>
+                            <span class="project-status">Version <span class="version-badge">...</span></span>
                         </div>
                     </div>
                     <p>A minimal, cross-platform file-sharing platform built in pure <strong>Rust</strong>. Fillie facilitates fast, secure, and serverless P2P file transfers across local networks, featuring AES-256 encryption and SHA256 integrity checks for robust data security.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Rust</span>
-                        <span class="tech-tag">Networking</span>
-                        <span class="tech-tag">Concurrency</span>
-                        <span class="tech-tag">P2P</span>
-                        <span class="tech-tag">Encryption</span>
-                    </div>
-                    <a href="https://github.com/sharmadevanshu089/fillie" target="_blank" rel="noopener noreferrer" class="project-github-button">
-                        <i class="fa fa-github"></i> View on GitHub
-                    </a>
+                    <div class="project-tech"><span class="tech-tag">Rust</span><span class="tech-tag">Networking</span><span class="tech-tag">Concurrency</span><span class="tech-tag">P2P</span><span class="tech-tag">Encryption</span></div>
+                    <div class="project-buttons"><a href="https://github.com/sharmadevanshu089/fillie" target="_blank" rel="noopener noreferrer" class="project-button github"><i class="fa fa-github"></i> View on GitHub</a></div>
                 </article>
                 
-                <article class="project-card">
+                <article class="project-card" data-repo="json-sanitiser">
                     <div class="project-header">
                         <i class="fa fa-shield project-icon"></i>
                         <div class="project-title">
                             <h3>Rust SIEM Log Sanitizer</h3>
-                            <span class="project-status">Production Ready</span>
+                            <span class="project-status">In Development</span>
                         </div>
                     </div>
                     <p>A memory-safe, high-performance log sanitizer in <strong>Rust</strong> to preprocess JSON logs before ingestion into SIEM platforms. It protects against log injection and malformed data attacks by sanitizing fields and rejecting invalid entries, enhancing security pipeline reliability.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Rust</span>
-                        <span class="tech-tag">Security</span>
-                        <span class="tech-tag">TCP/IP</span>
-                        <span class="tech-tag">JSON</span>
-                        <span class="tech-tag">SIEM</span>
-                    </div>
-                    <a href="https://github.com/SharmaDevanshu089/json-sanitiser" target="_blank" rel="noopener noreferrer" class="project-github-button">
-                        <i class="fa fa-github"></i> View on GitHub
-                    </a>
+                    <div class="project-tech"><span class="tech-tag">Rust</span><span class="tech-tag">Security</span><span class="tech-tag">TCP/IP</span><span class="tech-tag">JSON</span><span class="tech-tag">SIEM</span></div>
+                    <div class="project-buttons"><a href="https://github.com/SharmaDevanshu089/json-sanitiser" target="_blank" rel="noopener noreferrer" class="project-button github"><i class="fa fa-github"></i> View on GitHub</a></div>
                 </article>
                 
-                <article class="project-card">
+                <article class="project-card" data-repo="Clause-AI">
                     <div class="project-header">
                         <i class="fa fa-gavel project-icon"></i>
                         <div class="project-title">
@@ -328,62 +260,44 @@
                         </div>
                     </div>
                     <p>A full-stack, AI-driven tool for legal comprehension, built during a hackathon. It utilizes a **performant Rust backend** interfacing with the Google Gemini API to deliver actionable insights and summaries from complex legal documents, greatly enhancing user understanding.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">Rust</span>
-                        <span class="tech-tag">Generative AI</span>
-                        <span class="tech-tag">APIs</span>
-                        <span class="tech-tag">NLP</span>
-                    </div>
-                    <a href="https://github.com/SharmaDevanshu089/Clause-AI" target="_blank" rel="noopener noreferrer" class="project-github-button">
-                        <i class="fa fa-github"></i> View on GitHub
-                    </a>
+                    <div class="project-tech"><span class="tech-tag">Python</span><span class="tech-tag">Rust</span><span class="tech-tag">Generative AI</span><span class="tech-tag">APIs</span><span class="tech-tag">NLP</span></div>
+                    <div class="project-buttons"><a href="https://github.com/SharmaDevanshu089/Clause-AI" target="_blank" rel="noopener noreferrer" class="project-button github"><i class="fa fa-github"></i> View on GitHub</a></div>
                 </article>
 
-                <article class="project-card">
+                <article class="project-card" data-repo="autocrate">
                     <div class="project-header">
                         <i class="fa fa-terminal project-icon"></i>
                         <div class="project-title">
                             <h3>AutoCrate CLI</h3>
-                            <span class="project-status">Production Ready</span>
+                            <span class="project-status">Version <span class="version-badge">...</span></span>
                         </div>
                     </div>
                     <p>A powerful **Rust CLI tool** that streamlines project initialization. It automatically creates sequential Rust projects, initializes Git repositories, and opens them in your preferred editor, significantly improving developer workflow and project setup time.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Rust</span>
-                        <span class="tech-tag">CLI</span>
-                        <span class="tech-tag">Developer Tool</span>
-                        <span class="tech-tag">Workflow Automation</span>
+                    <div class="project-tech"><span class="tech-tag">Rust</span><span class="tech-tag">CLI</span><span class="tech-tag">Developer Tool</span><span class="tech-tag">Automation</span></div>
+                    <div class="project-buttons">
+                        <a href="https://github.com/sharmadevanshu089/autocrate" target="_blank" rel="noopener noreferrer" class="project-button github"><i class="fa fa-github"></i> View on GitHub</a>
+                        <a href="https://github.com/sharmadevanshu089/autocrate/releases" target="_blank" rel="noopener noreferrer" class="project-button download"><i class="fa fa-download"></i> Download Latest</a>
                     </div>
-                    <a href="https://github.com/sharmadevanshu089/autocrate" target="_blank" rel="noopener noreferrer" class="project-github-button">
-                        <i class="fa fa-github"></i> View on GitHub
-                    </a>
                 </article>
 
-                <article class="project-card">
+                <article class="project-card" data-repo="input">
                     <div class="project-header">
                         <i class="fa fa-keyboard-o project-icon"></i>
                         <div class="project-title">
                             <h3>From-User (Rust Input Helper)</h3>
-                            <span class="project-status">Production Ready</span>
+                            <span class="project-status">Version <span class="version-badge">...</span></span>
                         </div>
                     </div>
                     <p>A tiny, highly simplified **Rust library** designed to handle user input ergonomically. It provides robust error handling and clear type conversions, making it easier and safer to interact with user inputs in CLI applications.</p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Rust</span>
-                        <span class="tech-tag">CLI</span>
-                        <span class="tech-tag">Library</span>
-                        <span class="tech-tag">Error Handling</span>
-                    </div>
-                    <a href="https://github.com/sharmadevanshu089/input" target="_blank" rel="noopener noreferrer" class="project-github-button">
-                        <i class="fa fa-github"></i> View on GitHub
-                    </a>
+                    <div class="project-tech"><span class="tech-tag">Rust</span><span class="tech-tag">CLI</span><span class="tech-tag">Library</span><span class="tech-tag">Error Handling</span></div>
+                    <div class="project-buttons"><a href="https://github.com/sharmadevanshu089/input" target="_blank" rel="noopener noreferrer" class="project-button github"><i class="fa fa-github"></i> View on GitHub</a></div>
                 </article>
             </div>
         </section>
 
+        <!-- CHANGE: This entire section has been rewritten -->
         <section id="education-experience">
-            <h2 class="section-title">Education & Experience</h2>
+            <h2 class="section-title">Education & Hackathon Experience</h2>
             <div class="education-experience-grid">
                 <div class="education-card">
                     <i class="fa fa-graduation-cap"></i>
@@ -391,25 +305,27 @@
                     <h4>Institute of Engineering & Technology, Udaipur</h4>
                     <p>Class of 2028 &bull; First Year Student</p>
                 </div>
-
-                <div class="experience-card">
-                    <h3>Hackathons & Competitions</h3>
-                    <p>I'm an active participant in college and online hackathons, consistently focused on rapid prototyping and delivering working solutions under pressure. I thrive on integrating **Rust backends** with lightweight frontends to deploy minimum viable features quickly.</p>
-                    <ul>
-                        <li>**Shipped multiple working prototypes** within 24–48 hours, covering both backend logic and user interface design.</li>
-                        <li>Gained extensive experience in **presenting technical demos**, writing concise documentation, and effectively responding to feedback in fast-paced environments.</li>
-                        <li>Regularly take ownership of **backend architecture, protocol design, and cross-platform integration layers** during these events.</li>
-                    </ul>
-                </div>
-
-                <div class="experience-card">
-                    <h3>Internship Readiness & Project Delivery</h3>
-                    <p>Though early in formal titles, I possess hands-on project delivery experience, including shipping a cross-platform desktop application in 3 weeks, building foundational infrastructure tools, and integrating AI prototypes. I am eager for **internship opportunities** where I can apply my systems programming skills and contribute to a team.</p>
-                    <ul>
-                        <li>**Quick ramp-up ability**: I can rapidly learn unfamiliar codebases and make small, testable, and impactful contributions.</li>
-                        <li>**Production mindset**: Familiar with best practices in logging, CI/CD automation, release processes, and monitoring considerations for reliable software.</li>
-                        <li>Comfortable collaborating with senior engineers, actively participating in code reviews, and iterating quickly based on feedback.</li>
-                    </ul>
+                <div class="hackathon-grid">
+                    <div class="experience-card">
+                        <h3>Cyber Kavach Hackathon</h3>
+                        <h4>Project: Rust SIEM Log Sanitizer</h4>
+                        <p>In this cybersecurity-focused hackathon, I developed a high-performance, memory-safe log sanitizer in Rust. The tool listens on a TCP port, ingesting JSON logs, and sanitizes them to prevent log injection attacks before they reach a SIEM or XDR platform.</p>
+                        <ul>
+                            <li>Engineered a concurrent TCP server to handle multiple log streams efficiently.</li>
+                            <li>Implemented robust JSON validation and sanitization logic to neutralize malicious payloads.</li>
+                            <li>Demonstrated the practical application of Rust for building secure, high-throughput network services.</li>
+                        </ul>
+                    </div>
+                    <div class="experience-card">
+                        <h3>Google GenAI Hackathon</h3>
+                        <h4>Project: ClauseAI</h4>
+                        <p>For this hackathon, I built a full-stack application to demystify complex legal documents for the average user. The system leverages a Rust backend to interface with the Google Gemini API, providing simplified summaries of legal jargon.</p>
+                        <ul>
+                            <li>Designed and built a performant Rust backend to manage API requests and data processing.</li>
+                            <li>Successfully integrated with the Google Gemini API for advanced language model capabilities.</li>
+                            <li>Showcased the ability to rapidly prototype and deliver an end-to-end solution combining systems programming with generative AI.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>
@@ -420,22 +336,10 @@
                 I'm actively seeking project-based contributions, **internships**, remote collaborations, and mentorship. I move fast, learn fast, and prefer contributing practical code and tools. If you have an idea or just want to talk tech, feel free to reach out!
             </p>
             <div class="social-links">
-                <a href="https://github.com/sharmadevanshu089" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <i class="fa fa-github"></i>
-                    <span>GitHub</span>
-                </a>
-                <a href="mailto:sharma.devanshu089@gmail.com" class="social-link">
-                    <i class="fa fa-envelope"></i>
-                    <span>Email</span>
-                </a>
-                <a href="https://www.linkedin.com/in/sharmadevanshu089/" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <i class="fa fa-linkedin"></i>
-                    <span>LinkedIn</span>
-                </a>
-                <a href="https://www.youtube.com/@PotatoAsUserName" class="social-link" target="_blank" rel="noopener noreferrer">
-                    <i class="fa fa-youtube"></i>
-                    <span>YouTube</span>
-                </a>
+                <a href="https://github.com/sharmadevanshu089" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fa fa-github"></i><span>GitHub</span></a>
+                <a href="mailto:sharma.devanshu089@gmail.com" class="social-link"><i class="fa fa-envelope"></i><span>Email</span></a>
+                <a href="https://www.linkedin.com/in/sharmadevanshu089/" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fa fa-linkedin"></i><span>LinkedIn</span></a>
+                <a href="https://www.youtube.com/@PotatoAsUserName" class="social-link" target="_blank" rel="noopener noreferrer"><i class="fa fa-youtube"></i><span>YouTube</span></a>
             </div>
         </section>
     </main>
@@ -450,11 +354,9 @@
             function initAnimatedStars() {
                 const container = document.getElementById('stars');
                 if (!container) return;
-                
                 const colors = ['#00ff99', '#00aaff', '#33ccff', '#a855f7', '#00ffa3', '#22D3EE'];
                 const starCount = 120;
                 const fragment = document.createDocumentFragment();
-
                 for (let i = 0; i < starCount; i++) {
                     const star = document.createElement('div');
                     star.className = 'star';
@@ -471,13 +373,8 @@
             function initNavbarScroll() {
                 const navbar = document.getElementById('navbar');
                 if (!navbar) return;
-
                 window.addEventListener('scroll', () => {
-                    if (window.scrollY > 80) {
-                        navbar.classList.add('scrolled');
-                    } else {
-                        navbar.classList.remove('scrolled');
-                    }
+                    navbar.classList.toggle('scrolled', window.scrollY > 80);
                 }, { passive: true });
             }
 
@@ -493,24 +390,14 @@
                         }
                     });
                 }, options);
-
                 document.querySelectorAll('.about-content, .project-card, .education-card, .experience-card').forEach(el => observer.observe(el));
             }
 
             function initDynamicRoles() {
                 const heroTitle = document.querySelector('.hero-content h2');
                 if (!heroTitle) return;
-
-                const roles = [
-                    'Systems Developer & Rust Enthusiast',
-                    'Open Source Contributor',
-                    'Cybersecurity Tool Developer',
-                    'Cross-Platform Tool Builder',
-                    'Memory Safety Advocate',
-                    'Passionate Game Developer'
-                ];
+                const roles = ['Systems Developer & Rust Enthusiast', 'Open Source Contributor', 'Cybersecurity Tool Developer', 'Cross-Platform Tool Builder', 'Memory Safety Advocate', 'Passionate Game Developer'];
                 let currentRoleIndex = 0;
-
                 setInterval(() => {
                     currentRoleIndex = (currentRoleIndex + 1) % roles.length;
                     heroTitle.style.opacity = '0';
@@ -525,29 +412,16 @@
 
             function initCustomCursor() {
                 if (window.matchMedia("(pointer: coarse)").matches) return;
-
                 const cursor = document.createElement('div');
-                cursor.style.cssText = `
-                    position: fixed; width: 18px; height: 18px; border: 2px solid rgba(34,211,238,0.5);
-                    border-radius: 50%; pointer-events: none; z-index: 9999; 
-                    transition: transform .18s ease, border-color .18s ease; left: -50px; top: -50px;
-                `;
+                cursor.style.cssText = `position: fixed; width: 18px; height: 18px; border: 2px solid rgba(34,211,238,0.5); border-radius: 50%; pointer-events: none; z-index: 9999; transition: transform .18s ease, border-color .18s ease; left: -50px; top: -50px;`;
                 document.body.appendChild(cursor);
-
-                document.addEventListener('mousemove', (e) => {
+                document.addEventListener('mousemove', e => {
                     cursor.style.left = `${e.clientX - 9}px`;
                     cursor.style.top = `${e.clientY - 9}px`;
                 });
-                
                 document.querySelectorAll('a, button, .skill-item, .project-card').forEach(el => {
-                    el.addEventListener('mouseenter', () => {
-                        cursor.style.transform = 'scale(1.4)';
-                        cursor.style.borderColor = 'rgba(0,255,163,0.9)';
-                    });
-                    el.addEventListener('mouseleave', () => {
-                        cursor.style.transform = 'scale(1)';
-                        cursor.style.borderColor = 'rgba(34,211,238,0.5)';
-                    });
+                    el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(1.4)'; cursor.style.borderColor = 'rgba(0,255,163,0.9)'; });
+                    el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; cursor.style.borderColor = 'rgba(34,211,238,0.5)'; });
                 });
             }
 
@@ -567,8 +441,34 @@
             }
 
             function initProjectCardStagger() {
-                const projectCards = document.querySelectorAll('.project-card');
-                projectCards.forEach((card, index) => card.style.transitionDelay = `${index * 0.08}s`);
+                document.querySelectorAll('.project-card').forEach((card, index) => card.style.transitionDelay = `${index * 0.08}s`);
+            }
+            
+            // CHANGE: New function to fetch latest versions from GitHub API
+            async function fetchProjectVersions() {
+                const projectsToFetch = document.querySelectorAll('.project-card[data-repo]');
+                
+                for (const projectCard of projectsToFetch) {
+                    const repo = projectCard.dataset.repo;
+                    const statusEl = projectCard.querySelector('.project-status');
+                    const versionBadge = projectCard.querySelector('.version-badge');
+
+                    if (!repo || !statusEl || !versionBadge) continue;
+
+                    try {
+                        const response = await fetch(`https://api.github.com/repos/sharmadevanshu089/${repo}/releases/latest`);
+                        if (!response.ok) {
+                           throw new Error(`Repo not found or no releases: ${repo}`);
+                        }
+                        const data = await response.json();
+                        if (data.tag_name) {
+                            versionBadge.textContent = data.tag_name;
+                        }
+                    } catch (error) {
+                        console.error(`Could not fetch version for ${repo}:`, error);
+                        // If fetching fails, the default status text remains
+                    }
+                }
             }
 
             // --- Initialize all scripts ---
@@ -579,10 +479,9 @@
             initCustomCursor();
             initSmoothScrolling();
             initProjectCardStagger();
+            fetchProjectVersions(); // Fetch dynamic versions
 
-            setTimeout(() => {
-                document.body.style.opacity = '1';
-            }, 100); 
+            setTimeout(() => { document.body.style.opacity = '1'; }, 100); 
 
             console.log('%c🦀 Welcome! This portfolio is built with a passion for performant code.', 'color: #00FFA3; font-size: 14px; font-weight: bold;');
             console.log('%cYou can find the source on my GitHub: github.com/sharmadevanshu089', 'color:#22D3EE;');
